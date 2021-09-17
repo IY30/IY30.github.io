@@ -198,12 +198,17 @@
       </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/2021/09/16/test/</url>
+    <title>test</title>
+    <url>/2021/09/10/test/</url>
     <content><![CDATA[<p><img src="images/code/image-20210916230235784.png" alt="image-20210916230235784"></p>
+<hr>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><hr>
 ]]></content>
+      <categories>
+        <category>123</category>
+      </categories>
       <tags>
-        <tag>test</tag>
+        <tag>tttt</tag>
       </tags>
   </entry>
 </search>
