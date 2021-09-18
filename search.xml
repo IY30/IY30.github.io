@@ -1,6 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>test</title>
+    <url>/2021/08/10/test/</url>
+    <content><![CDATA[<p><img src="images/code/image-20210916230235784.png" alt="image-20210916230235784"></p>
+<hr>
+<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><hr>
+<p><img src="/2021/08/10/test/image-20210918210221062.png" alt="image-20210918210221062"></p>
+<p>2021.9.18 9</p>
+<p><img src="/2021/08/10/test/image-20210918212733477.png" alt="image-20210918212733477"></p>
+]]></content>
+      <categories>
+        <category>test1</category>
+      </categories>
+      <tags>
+        <tag>test1</tag>
+        <tag>test2</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>常见pwn类赛题</title>
+    <url>/2021/09/18/%E5%B8%B8%E8%A7%81pwn%E7%B1%BB%E8%B5%9B%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="常见的PWN类赛题有以下几种。"><a href="#常见的PWN类赛题有以下几种。" class="headerlink" title="常见的PWN类赛题有以下几种。"></a>常见的PWN类赛题有以下几种。</h2><ul>
+<li>Windows。</li>
+<li>Python。</li>
+<li>Linux：包括stack、ret2plt、ret2libc、heap、fastbin、unlink、use after free。</li>
+<li>其它：包括格式化字符串、整数输出。</li>
+</ul>
+<hr>
+<h6 id="下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。"><a href="#下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。" class="headerlink" title="下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。"></a><em>下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。</em></h6><h6 id="有时间把做过的题补充上。"><a href="#有时间把做过的题补充上。" class="headerlink" title="有时间把做过的题补充上。"></a><em>有时间把做过的题补充上。</em></h6><h6 id="其它缺陷慢慢补吧。。。"><a href="#其它缺陷慢慢补吧。。。" class="headerlink" title="其它缺陷慢慢补吧。。。"></a><em>其它缺陷慢慢补吧。。。</em></h6><hr>
+<h2 id="Windows-PWN"><a href="#Windows-PWN" class="headerlink" title="Windows PWN"></a>Windows PWN</h2><h6 id="1-FTP协议栈溢出漏洞"><a href="#1-FTP协议栈溢出漏洞" class="headerlink" title="1. FTP协议栈溢出漏洞"></a>1. FTP协议栈溢出漏洞</h6><h2 id="Linux-PWN"><a href="#Linux-PWN" class="headerlink" title="Linux PWN"></a>Linux PWN</h2><h6 id="1-静态编译软件栈溢出漏洞"><a href="#1-静态编译软件栈溢出漏洞" class="headerlink" title="1.静态编译软件栈溢出漏洞"></a>1.静态编译软件栈溢出漏洞</h6><h6 id="2-ret2libc栈溢出漏洞"><a href="#2-ret2libc栈溢出漏洞" class="headerlink" title="2.ret2libc栈溢出漏洞"></a>2.ret2libc栈溢出漏洞</h6><h6 id="3-构造浮点型Shellcode"><a href="#3-构造浮点型Shellcode" class="headerlink" title="3.构造浮点型Shellcode"></a>3.构造浮点型Shellcode</h6><h6 id="4-Linux栈溢出漏洞"><a href="#4-Linux栈溢出漏洞" class="headerlink" title="4.Linux栈溢出漏洞"></a>4.Linux栈溢出漏洞</h6><h6 id="5-ret2plt栈溢出漏洞"><a href="#5-ret2plt栈溢出漏洞" class="headerlink" title="5.ret2plt栈溢出漏洞"></a>5.ret2plt栈溢出漏洞</h6><h6 id="6-unlink堆溢出漏洞"><a href="#6-unlink堆溢出漏洞" class="headerlink" title="6.unlink堆溢出漏洞"></a>6.unlink堆溢出漏洞</h6><h6 id="7-UAF堆溢出漏洞"><a href="#7-UAF堆溢出漏洞" class="headerlink" title="7.UAF堆溢出漏洞"></a>7.UAF堆溢出漏洞</h6><h6 id="8-格式化字符串漏洞"><a href="#8-格式化字符串漏洞" class="headerlink" title="8.格式化字符串漏洞"></a>8.格式化字符串漏洞</h6><h6 id="9-整数溢出"><a href="#9-整数溢出" class="headerlink" title="9.整数溢出"></a>9.整数溢出</h6><h6 id="10-Linux随机数"><a href="#10-Linux随机数" class="headerlink" title="10.Linux随机数"></a>10.Linux随机数</h6><h2 id="Python-PWN"><a href="#Python-PWN" class="headerlink" title="Python PWN"></a>Python PWN</h2><h6 id="1-Python沙盒绕过"><a href="#1-Python沙盒绕过" class="headerlink" title="1.Python沙盒绕过"></a>1.Python沙盒绕过</h6>]]></content>
+      <tags>
+        <tag>pwn</tag>
+        <tag>赛题</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>攻防世界_pwn</title>
     <url>/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/</url>
     <content><![CDATA[<p> 初来乍到，多多包涵。</p>
@@ -191,23 +226,8 @@
         <category>攻防世界</category>
       </categories>
       <tags>
-        <tag>攻防世界</tag>
         <tag>pwn</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>test</title>
-    <url>/2021/08/10/test/</url>
-    <content><![CDATA[<p><img src="images/code/image-20210916230235784.png" alt="image-20210916230235784"></p>
-<hr>
-<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><hr>
-]]></content>
-      <categories>
-        <category>test1</category>
-      </categories>
-      <tags>
-        <tag>test1</tag>
-        <tag>test2</tag>
+        <tag>攻防世界</tag>
       </tags>
   </entry>
   <entry>
@@ -215,36 +235,5 @@
     <url>/2021/08/29/%E8%B5%B7%E7%82%B9/</url>
     <content><![CDATA[<p>hello</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>test</title>
-    <url>/2021/09/10/test-1/test-1/</url>
-    <content><![CDATA[<p><img src="image-20210917235743052.png" alt="image-20210917235743052"></p>
-<p>ddd</p>
-<p><img src="image-20210918000622757.png" alt="image-20210918000622757"></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>gg</title>
-    <url>/2021/09/18/gg/</url>
-    <content><![CDATA[<p><img src="/2021/09/18/gg/image-20210918003927921.png" alt="image-20210918003927921"></p>
-]]></content>
-  </entry>
-  <entry>
-    <title>常见pwn类赛题</title>
-    <url>/2021/09/18/%E5%B8%B8%E8%A7%81pwn%E7%B1%BB%E8%B5%9B%E9%A2%98/</url>
-    <content><![CDATA[<h2 id="常见的PWN类赛题有以下几种。"><a href="#常见的PWN类赛题有以下几种。" class="headerlink" title="常见的PWN类赛题有以下几种。"></a>常见的PWN类赛题有以下几种。</h2><ul>
-<li>Windows。</li>
-<li>Python。</li>
-<li>Linux：包括stack、ret2plt、ret2libc、heap、fastbin、unlink、use after free。</li>
-<li>其它：包括格式化字符串、整数输出。</li>
-</ul>
-<hr>
-<h6 id="下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。"><a href="#下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。" class="headerlink" title="下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。"></a><em>下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。</em></h6><h6 id="有时间把做过的题补充上。"><a href="#有时间把做过的题补充上。" class="headerlink" title="有时间把做过的题补充上。"></a><em>有时间把做过的题补充上。</em></h6><h6 id="其它缺陷慢慢补吧。。。"><a href="#其它缺陷慢慢补吧。。。" class="headerlink" title="其它缺陷慢慢补吧。。。"></a><em>其它缺陷慢慢补吧。。。</em></h6><hr>
-<h2 id="Windows-PWN"><a href="#Windows-PWN" class="headerlink" title="Windows PWN"></a>Windows PWN</h2><h6 id="1-FTP协议栈溢出漏洞"><a href="#1-FTP协议栈溢出漏洞" class="headerlink" title="1. FTP协议栈溢出漏洞"></a>1. FTP协议栈溢出漏洞</h6><h2 id="Linux-PWN"><a href="#Linux-PWN" class="headerlink" title="Linux PWN"></a>Linux PWN</h2><h6 id="1-静态编译软件栈溢出漏洞"><a href="#1-静态编译软件栈溢出漏洞" class="headerlink" title="1.静态编译软件栈溢出漏洞"></a>1.静态编译软件栈溢出漏洞</h6><h6 id="2-ret2libc栈溢出漏洞"><a href="#2-ret2libc栈溢出漏洞" class="headerlink" title="2.ret2libc栈溢出漏洞"></a>2.ret2libc栈溢出漏洞</h6><h6 id="3-构造浮点型Shellcode"><a href="#3-构造浮点型Shellcode" class="headerlink" title="3.构造浮点型Shellcode"></a>3.构造浮点型Shellcode</h6><h6 id="4-Linux栈溢出漏洞"><a href="#4-Linux栈溢出漏洞" class="headerlink" title="4.Linux栈溢出漏洞"></a>4.Linux栈溢出漏洞</h6><h6 id="5-ret2plt栈溢出漏洞"><a href="#5-ret2plt栈溢出漏洞" class="headerlink" title="5.ret2plt栈溢出漏洞"></a>5.ret2plt栈溢出漏洞</h6><h6 id="6-unlink堆溢出漏洞"><a href="#6-unlink堆溢出漏洞" class="headerlink" title="6.unlink堆溢出漏洞"></a>6.unlink堆溢出漏洞</h6><h6 id="7-UAF堆溢出漏洞"><a href="#7-UAF堆溢出漏洞" class="headerlink" title="7.UAF堆溢出漏洞"></a>7.UAF堆溢出漏洞</h6><h6 id="8-格式化字符串漏洞"><a href="#8-格式化字符串漏洞" class="headerlink" title="8.格式化字符串漏洞"></a>8.格式化字符串漏洞</h6><h6 id="9-整数溢出"><a href="#9-整数溢出" class="headerlink" title="9.整数溢出"></a>9.整数溢出</h6><h6 id="10-Linux随机数"><a href="#10-Linux随机数" class="headerlink" title="10.Linux随机数"></a>10.Linux随机数</h6><h2 id="Python-PWN"><a href="#Python-PWN" class="headerlink" title="Python PWN"></a>Python PWN</h2><h6 id="1-Python沙盒绕过"><a href="#1-Python沙盒绕过" class="headerlink" title="1.Python沙盒绕过"></a>1.Python沙盒绕过</h6>]]></content>
-      <tags>
-        <tag>pwn</tag>
-        <tag>赛题</tag>
-      </tags>
   </entry>
 </search>
