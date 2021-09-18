@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>tags |  屿</title>
+      <title>常见pwn类赛题 |  屿</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -65,13 +65,211 @@
       
     <main class="content on">
       <section class="outer">
+  <article
+  id="post-常见pwn类赛题"
+  class="article article-type-post"
+  itemscope
+  itemprop="blogPost"
+  data-scroll-reveal
+>
+  <div class="article-inner">
+    
+    <header class="article-header">
+       
+<h1 class="article-title sea-center" style="border-left:0" itemprop="name">
+  常见pwn类赛题
+</h1>
+ 
+
+      
+    </header>
+     
+    <div class="article-meta">
+      <a href="/2021/09/18/%E5%B8%B8%E8%A7%81pwn%E7%B1%BB%E8%B5%9B%E9%A2%98/" class="article-date">
+  <time datetime="2021-09-18T12:27:25.000Z" itemprop="datePublished">2021-09-18</time>
+</a>   
+<div class="word_count">
+    <span class="post-time">
+        <span class="post-meta-item-icon">
+            <i class="ri-quill-pen-line"></i>
+            <span class="post-meta-item-text"> Word count:</span>
+            <span class="post-count">173</span>
+        </span>
+    </span>
+
+    <span class="post-time">
+        &nbsp; | &nbsp;
+        <span class="post-meta-item-icon">
+            <i class="ri-book-open-line"></i>
+            <span class="post-meta-item-text"> Reading time≈</span>
+            <span class="post-count">1 min</span>
+        </span>
+    </span>
+</div>
+ 
+    </div>
+      
+    <div class="tocbot"></div>
+
+
+
+
   
-    <h1 class="page-type-title">Tags</h1>
-    <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test1/" rel="tag">test1</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/test2/" rel="tag">test2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/" rel="tag">攻防世界</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%B5%9B%E9%A2%98/" rel="tag">赛题</a></li></ul>
-  
+    <div class="article-entry" itemprop="articleBody">
+       
+  <h2 id="常见的PWN类赛题有以下几种。"><a href="#常见的PWN类赛题有以下几种。" class="headerlink" title="常见的PWN类赛题有以下几种。"></a>常见的PWN类赛题有以下几种。</h2><ul>
+<li>Windows。</li>
+<li>Python。</li>
+<li>Linux：包括stack、ret2plt、ret2libc、heap、fastbin、unlink、use after free。</li>
+<li>其它：包括格式化字符串、整数输出。</li>
+</ul>
+<hr>
+<h6 id="下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。"><a href="#下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。" class="headerlink" title="下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。"></a><em>下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。</em></h6><h6 id="有时间把做过的题补充上。"><a href="#有时间把做过的题补充上。" class="headerlink" title="有时间把做过的题补充上。"></a><em>有时间把做过的题补充上。</em></h6><h6 id="其它缺陷慢慢补吧。。。"><a href="#其它缺陷慢慢补吧。。。" class="headerlink" title="其它缺陷慢慢补吧。。。"></a><em>其它缺陷慢慢补吧。。。</em></h6><hr>
+<h2 id="Windows-PWN"><a href="#Windows-PWN" class="headerlink" title="Windows PWN"></a>Windows PWN</h2><h6 id="1-FTP协议栈溢出漏洞"><a href="#1-FTP协议栈溢出漏洞" class="headerlink" title="1. FTP协议栈溢出漏洞"></a>1. FTP协议栈溢出漏洞</h6><h2 id="Linux-PWN"><a href="#Linux-PWN" class="headerlink" title="Linux PWN"></a>Linux PWN</h2><h6 id="1-静态编译软件栈溢出漏洞"><a href="#1-静态编译软件栈溢出漏洞" class="headerlink" title="1.静态编译软件栈溢出漏洞"></a>1.静态编译软件栈溢出漏洞</h6><h6 id="2-ret2libc栈溢出漏洞"><a href="#2-ret2libc栈溢出漏洞" class="headerlink" title="2.ret2libc栈溢出漏洞"></a>2.ret2libc栈溢出漏洞</h6><h6 id="3-构造浮点型Shellcode"><a href="#3-构造浮点型Shellcode" class="headerlink" title="3.构造浮点型Shellcode"></a>3.构造浮点型Shellcode</h6><h6 id="4-Linux栈溢出漏洞"><a href="#4-Linux栈溢出漏洞" class="headerlink" title="4.Linux栈溢出漏洞"></a>4.Linux栈溢出漏洞</h6><h6 id="5-ret2plt栈溢出漏洞"><a href="#5-ret2plt栈溢出漏洞" class="headerlink" title="5.ret2plt栈溢出漏洞"></a>5.ret2plt栈溢出漏洞</h6><h6 id="6-unlink堆溢出漏洞"><a href="#6-unlink堆溢出漏洞" class="headerlink" title="6.unlink堆溢出漏洞"></a>6.unlink堆溢出漏洞</h6><h6 id="7-UAF堆溢出漏洞"><a href="#7-UAF堆溢出漏洞" class="headerlink" title="7.UAF堆溢出漏洞"></a>7.UAF堆溢出漏洞</h6><h6 id="8-格式化字符串漏洞"><a href="#8-格式化字符串漏洞" class="headerlink" title="8.格式化字符串漏洞"></a>8.格式化字符串漏洞</h6><h6 id="9-整数溢出"><a href="#9-整数溢出" class="headerlink" title="9.整数溢出"></a>9.整数溢出</h6><h6 id="10-Linux随机数"><a href="#10-Linux随机数" class="headerlink" title="10.Linux随机数"></a>10.Linux随机数</h6><h2 id="Python-PWN"><a href="#Python-PWN" class="headerlink" title="Python PWN"></a>Python PWN</h2><h6 id="1-Python沙盒绕过"><a href="#1-Python沙盒绕过" class="headerlink" title="1.Python沙盒绕过"></a>1.Python沙盒绕过</h6> 
+      <!-- reward -->
+      
+      <div id="reword-out">
+        <div id="reward-btn">
+          Donate
+        </div>
+      </div>
+      
+    </div>
+    
+
+    <!-- copyright -->
+    
+    <div class="declare">
+      <ul class="post-copyright">
+        <li>
+          <i class="ri-copyright-line"></i>
+          <strong>Copyright： </strong>
+          
+          Copyright is owned by the author. For commercial reprints, please contact the author for authorization. For non-commercial reprints, please indicate the source.
+          
+        </li>
+      </ul>
+    </div>
+    
+    <footer class="article-footer">
+       
+<div class="share-btn">
+      <span class="share-sns share-outer">
+        <i class="ri-share-forward-line"></i>
+        分享
+      </span>
+      <div class="share-wrap">
+        <i class="arrow"></i>
+        <div class="share-icons">
+          
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="ri-weibo-fill"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="ri-wechat-fill"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="ri-qq-fill"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="ri-douban-line"></i>
+          </a>
+          <!-- <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a> -->
+          
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="ri-facebook-circle-fill"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="ri-twitter-fill"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="ri-google-fill"></i>
+          </a>
+        </div>
+      </div>
+</div>
+
+<div class="wx-share-modal">
+    <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://iy30.github.io/2021/09/18/%E5%B8%B8%E8%A7%81pwn%E7%B1%BB%E8%B5%9B%E9%A2%98/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div id="share-mask"></div>  
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%B5%9B%E9%A2%98/" rel="tag">赛题</a></li></ul>
+
+    </footer>
+  </div>
+
+   
+  <nav class="article-nav">
+    
+    
+      <a href="/2021/09/18/gg/" class="article-nav-link">
+        <strong class="article-nav-caption">下一篇</strong>
+        <div class="article-nav-title">gg</div>
+      </a>
+    
+  </nav>
+
+   
+<!-- valine评论 -->
+<div id="vcomments-box">
+  <div id="vcomments"></div>
+</div>
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+    el: "#vcomments",
+    app_id: "",
+    app_key: "",
+    path: window.location.pathname,
+    avatar: "monsterid",
+    placeholder: "给我的文章加点评论吧~",
+    recordIP: true,
+  });
+  const infoEle = document.querySelector("#vcomments .info");
+  if (infoEle && infoEle.childNodes && infoEle.childNodes.length > 0) {
+    infoEle.childNodes.forEach(function (item) {
+      item.parentNode.removeChild(item);
+    });
+  }
+</script>
+<style>
+  #vcomments-box {
+    padding: 5px 30px;
+  }
+
+  @media screen and (max-width: 800px) {
+    #vcomments-box {
+      padding: 5px 0px;
+    }
+  }
+
+  #vcomments-box #vcomments {
+    background-color: #fff;
+  }
+
+  .v .vlist .vcard .vh {
+    padding-right: 20px;
+  }
+
+  .v .vlist .vcard {
+    padding-left: 10px;
+  }
+</style>
+
+ 
+   
+     
+</article>
+
 </section>
-
-
       <footer class="footer">
   <div class="outer">
     <ul>
@@ -209,6 +407,22 @@
 <script src="/js/lazyload.min.js"></script>
 
 <!-- Tocbot -->
+ 
+<script src="/js/tocbot.min.js"></script>
+
+<script>
+  tocbot.init({
+    tocSelector: ".tocbot",
+    contentSelector: ".article-entry",
+    headingSelector: "h1, h2, h3, h4, h5, h6",
+    hasInnerContainers: true,
+    scrollSmooth: true,
+    scrollContainer: "main",
+    positionFixedSelector: ".tocbot",
+    positionFixedClass: "is-position-fixed",
+    fixedSidebarOffset: "auto",
+  });
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery-modal@0.9.2/jquery.modal.min.js"></script>
 <link

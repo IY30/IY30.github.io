@@ -6,7 +6,7 @@
   <link href="https://iy30.github.io/atom.xml" rel="self"/>
   
   <link href="https://iy30.github.io/"/>
-  <updated>2021-09-17T16:06:25.026Z</updated>
+  <updated>2021-09-18T12:59:50.917Z</updated>
   <id>https://iy30.github.io/</id>
   
   <author>
@@ -15,6 +15,52 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>常见pwn类赛题</title>
+    <link href="https://iy30.github.io/2021/09/18/%E5%B8%B8%E8%A7%81pwn%E7%B1%BB%E8%B5%9B%E9%A2%98/"/>
+    <id>https://iy30.github.io/2021/09/18/%E5%B8%B8%E8%A7%81pwn%E7%B1%BB%E8%B5%9B%E9%A2%98/</id>
+    <published>2021-09-18T12:27:25.000Z</published>
+    <updated>2021-09-18T12:59:50.917Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;常见的PWN类赛题有以下几种。&quot;&gt;&lt;a href=&quot;#常见的PWN类赛题有以下几种。&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    
+    <category term="pwn" scheme="https://iy30.github.io/tags/pwn/"/>
+    
+    <category term="赛题" scheme="https://iy30.github.io/tags/%E8%B5%9B%E9%A2%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>gg</title>
+    <link href="https://iy30.github.io/2021/09/18/gg/"/>
+    <id>https://iy30.github.io/2021/09/18/gg/</id>
+    <published>2021-09-17T16:21:32.000Z</published>
+    <updated>2021-09-17T16:39:28.918Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;&lt;img src=&quot;/2021/09/18/gg/image-20210918003927921.png&quot;</summary>
+        
+      
+    
+    
+    
+    
+  </entry>
   
   <entry>
     <title>test</title>
@@ -44,51 +90,26 @@
     <link href="https://iy30.github.io/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/"/>
     <id>https://iy30.github.io/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/</id>
     <published>2021-09-10T05:01:07.000Z</published>
-    <updated>2021-09-17T13:48:15.114Z</updated>
+    <updated>2021-09-18T12:43:59.739Z</updated>
     
     
       
       
         
         
-    <summary type="html">&lt;p&gt; 初来咋到，多多包涵。&lt;/p&gt;
+    <summary type="html">&lt;p&gt; 初来乍到，多多包涵。&lt;/p&gt;
 &lt;h2 id=&quot;1、get-shell&quot;&gt;&lt;a href=&quot;#1、get-shell&quot; class=&quot;headerlink&quot; title=&quot;1、get shell&quot;&gt;&lt;/a&gt;1、get shell&lt;/h2&gt;&lt;p&gt;nc直连，cat</summary>
         
       
     
     
     
+    <category term="攻防世界" scheme="https://iy30.github.io/categories/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/"/>
+    
     
     <category term="攻防世界" scheme="https://iy30.github.io/tags/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C/"/>
     
-  </entry>
-  
-  <entry>
-    <title>test</title>
-    <link href="https://iy30.github.io/2021/09/10/test/"/>
-    <id>https://iy30.github.io/2021/09/10/test/</id>
-    <published>2021-09-10T05:01:01.000Z</published>
-    <updated>2021-09-17T14:58:39.595Z</updated>
-    
-    
-      
-      
-        
-        
-    <summary type="html">&lt;p&gt;&lt;img src=&quot;images/code/image-20210916230235784.png&quot; alt=&quot;image-20210916230235784&quot;&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;h1 id=&quot;测试&quot;&gt;&lt;a href=&quot;#测试&quot; class=&quot;headerlink&quot;</summary>
-        
-      
-    
-    
-    
-    <category term="123" scheme="https://iy30.github.io/categories/123/"/>
-    
-    
-    <category term="tttt" scheme="https://iy30.github.io/tags/tttt/"/>
-    
-    <category term="yyyy" scheme="https://iy30.github.io/tags/yyyy/"/>
+    <category term="pwn" scheme="https://iy30.github.io/tags/pwn/"/>
     
   </entry>
   
@@ -111,6 +132,35 @@
     
     
     
+    
+  </entry>
+  
+  <entry>
+    <title>test</title>
+    <link href="https://iy30.github.io/2021/08/10/test/"/>
+    <id>https://iy30.github.io/2021/08/10/test/</id>
+    <published>2021-08-10T05:01:01.000Z</published>
+    <updated>2021-09-18T12:25:01.673Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;&lt;img src=&quot;images/code/image-20210916230235784.png&quot; alt=&quot;image-20210916230235784&quot;&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&quot;测试&quot;&gt;&lt;a href=&quot;#测试&quot; class=&quot;headerlink&quot;</summary>
+        
+      
+    
+    
+    
+    <category term="test1" scheme="https://iy30.github.io/categories/test1/"/>
+    
+    
+    <category term="test1" scheme="https://iy30.github.io/tags/test1/"/>
+    
+    <category term="test2" scheme="https://iy30.github.io/tags/test2/"/>
     
   </entry>
   
