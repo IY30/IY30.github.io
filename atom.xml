@@ -6,7 +6,7 @@
   <link href="https://iy30.github.io/atom.xml" rel="self"/>
   
   <link href="https://iy30.github.io/"/>
-  <updated>2021-09-18T12:59:50.917Z</updated>
+  <updated>2021-09-22T14:54:03.112Z</updated>
   <id>https://iy30.github.io/</id>
   
   <author>
@@ -15,6 +15,35 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>64位ret2libc_用printf泄露read实际地址</title>
+    <link href="https://iy30.github.io/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/"/>
+    <id>https://iy30.github.io/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/</id>
+    <published>2021-09-22T14:13:41.993Z</published>
+    <updated>2021-09-22T14:54:03.112Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;64位程序，ret2libc类题目，用printf泄露read实际地址&lt;/p&gt;
+&lt;p&gt;checksec：&lt;/p&gt;
+&lt;p&gt;&lt;img</summary>
+        
+      
+    
+    
+    
+    <category term="buuctf" scheme="https://iy30.github.io/categories/buuctf/"/>
+    
+    
+    <category term="pwn" scheme="https://iy30.github.io/tags/pwn/"/>
+    
+    <category term="ret2libc" scheme="https://iy30.github.io/tags/ret2libc/"/>
+    
+  </entry>
   
   <entry>
     <title>常见pwn类赛题</title>
