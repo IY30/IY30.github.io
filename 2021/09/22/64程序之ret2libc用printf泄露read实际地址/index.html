@@ -140,7 +140,7 @@
 <p>远程libc版本：<img src="/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922223701204.png" alt="image-20210922223701204"></p>
 </li>
 <li><p>从上面可以看到，我的libc版本是2.31的，而靶机的libc版本是2.23的，这样就导致了一个问题。</p>
-<p>==<strong>当glibc版本大于2.27的时，系统调用system(“/bin/sh”)之前有个xmm寄存器使用。要确保rsp是与16对齐的，也就是末尾必须是0</strong>==</p>
+<p><strong>当glibc版本大于2.27的时，系统调用system(“/bin/sh”)之前有个xmm寄存器使用。要确保rsp是与16对齐的，也就是末尾必须是0</strong> </p>
 </li>
 <li><p>下面摘抄一段：<img src="/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922224515487.png" alt="image-20210922224515487"><img src="/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922224338013.png" alt="image-20210922224338013"></p>
 </li>

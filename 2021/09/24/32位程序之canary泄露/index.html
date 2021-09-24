@@ -138,7 +138,7 @@
 <p>由于程序开启了canary保护，所以我们不能直接进行溢出。需要先泄露canary的值，然后利用程序中的printf函数来将canary答应出来，由此构造第一个payload。接着知晓canary之后，就可以构造第二个payload进行下一步的溢出了。</p>
 <p><strong>在这里说明一下canary的结构</strong></p>
 <ul>
-<li><p>Canary设计**==以字节\x00结尾==<strong>，本意是保证Canary可以截断字符串。泄露栈中的Canary的思路是</strong>覆盖Canary的低字节**（即覆盖掉‘‘ <strong>\x00</strong> ’’，让其不能截断字符串，使其和字符串连接为一串。），来打印出剩余的Canary部分。需要合适的输出函数，并且需要先泄露Canary，之后再次溢出控制执行流程。</p>
+<li><p>Canary设计<strong>以字节\x00结尾</strong>，本意是保证Canary可以截断字符串。泄露栈中的Canary的思路是<strong>覆盖Canary的低字节</strong>（即覆盖掉‘‘ <strong>\x00</strong> ’’，让其不能截断字符串，使其和字符串连接为一串。），来打印出剩余的Canary部分。需要合适的输出函数，并且需要先泄露Canary，之后再次溢出控制执行流程。</p>
 </li>
 <li><p>需要注意：Canary一般最低位是\x00，也就是结尾处，64位程序的canary的大小是8个字节，32位程序的canary的大小是4个字节。</p>
 <p><strong>例如</strong>：</p>
