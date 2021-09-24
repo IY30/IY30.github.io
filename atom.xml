@@ -6,7 +6,7 @@
   <link href="https://iy30.github.io/atom.xml" rel="self"/>
   
   <link href="https://iy30.github.io/"/>
-  <updated>2021-09-22T14:54:03.112Z</updated>
+  <updated>2021-09-24T05:29:59.607Z</updated>
   <id>https://iy30.github.io/</id>
   
   <author>
@@ -17,11 +17,42 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>32位程序canary泄露</title>
+    <link href="https://iy30.github.io/2021/09/24/32%E4%BD%8D%E7%A8%8B%E5%BA%8F%E4%B9%8Bcanary%E6%B3%84%E9%9C%B2/"/>
+    <id>https://iy30.github.io/2021/09/24/32%E4%BD%8D%E7%A8%8B%E5%BA%8F%E4%B9%8Bcanary%E6%B3%84%E9%9C%B2/</id>
+    <published>2021-09-24T04:51:04.260Z</published>
+    <updated>2021-09-24T05:29:59.607Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;32位程序的canary泄露&lt;/p&gt;
+&lt;p&gt;checksec：&lt;/p&gt;
+&lt;p&gt;&lt;img</summary>
+        
+      
+    
+    
+    
+    <category term="ctfshow" scheme="https://iy30.github.io/categories/ctfshow/"/>
+    
+    
+    <category term="pwn" scheme="https://iy30.github.io/tags/pwn/"/>
+    
+    <category term="canary" scheme="https://iy30.github.io/tags/canary/"/>
+    
+    <category term="32位" scheme="https://iy30.github.io/tags/32%E4%BD%8D/"/>
+    
+  </entry>
+  
+  <entry>
     <title>64位ret2libc_用printf泄露read实际地址</title>
-    <link href="https://iy30.github.io/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/"/>
-    <id>https://iy30.github.io/2021/09/22/64%E4%BD%8Dret2libc_%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/</id>
+    <link href="https://iy30.github.io/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/"/>
+    <id>https://iy30.github.io/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/</id>
     <published>2021-09-22T14:13:41.993Z</published>
-    <updated>2021-09-22T14:54:03.112Z</updated>
+    <updated>2021-09-24T04:58:38.556Z</updated>
     
     
       
@@ -42,6 +73,8 @@
     <category term="pwn" scheme="https://iy30.github.io/tags/pwn/"/>
     
     <category term="ret2libc" scheme="https://iy30.github.io/tags/ret2libc/"/>
+    
+    <category term="64位" scheme="https://iy30.github.io/tags/64%E4%BD%8D/"/>
     
   </entry>
   
