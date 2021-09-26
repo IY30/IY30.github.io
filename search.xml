@@ -325,4 +325,309 @@
         <tag>32位</tag>
       </tags>
   </entry>
+  <entry>
+    <title>heap</title>
+    <url>/2021/09/24/heap/</url>
+    <content><![CDATA[<h2 id="什么是堆（heap）？"><a href="#什么是堆（heap）？" class="headerlink" title="什么是堆（heap）？"></a>什么是堆（heap）？</h2><ul>
+<li>是虚拟地址空间的一块连续线性区域</li>
+<li>提供动态分配的内存，允许程序申请大小未知的内存</li>
+<li>在用户与操作系统之间，向操作系统申请内存，然后将其返回给用户程序</li>
+<li>管理用户所释放的内存，适时归还给操作系统</li>
+</ul>
+<h2 id="各种堆管理器"><a href="#各种堆管理器" class="headerlink" title="各种堆管理器"></a>各种堆管理器</h2><ul>
+<li>dlmalloc - General purpose allocator</li>
+<li>ptmalloc2 - <strong>glibc</strong></li>
+<li>jemalloc - FreeBSD and Firefox </li>
+<li>tcmalloc - Google libumem - Solaris</li>
+</ul>
+<p>堆管理器并非由操作系统实现的，而是由libc.so.6动态链接库实现，封装了一些系统调用，为用户提供方便的动态内存分配接口的同时，力求高效地管理由系统调用申请来的内存。</p>
+<h5 id="arena"><a href="#arena" class="headerlink" title="arena"></a>arena</h5><p>内存分配区，可以理解为堆管理器所持有的内存池</p>
+<p><strong>操作系统–&gt;堆管理器–&gt;用户</strong></p>
+<p><strong>物理内存–&gt;arena–&gt;可用内存</strong></p>
+<p>堆管理器与用户的内存交易发生于arena中，可以理解为堆管理器向操作系统批发来的有冗余的内存库存。</p>
+<h2 id="chunk"><a href="#chunk" class="headerlink" title="chunk"></a><strong>chunk</strong></h2><p>用户申请内存的单位，也是堆管理器管理内存的基本单位malloc()返回的指针指向一个chunk的数据区域。</p>
+<ul>
+<li>结构：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="center">size of previous chunk if unallocated(P clear)</th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>size of chunk ,in bytes</strong></td>
+<td align="center"><strong>A</strong></td>
+<td align="center"><strong>M</strong></td>
+<td align="center"><strong>P</strong></td>
+</tr>
+<tr>
+<td align="center">data</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<ul>
+<li>chunk的分类：</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>按状态</th>
+<th>按大小</th>
+<th>按特定功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>malloced</td>
+<td>fast</td>
+<td>top chunk</td>
+</tr>
+<tr>
+<td>free</td>
+<td>small</td>
+<td>last remainder chunk</td>
+</tr>
+<tr>
+<td></td>
+<td>large</td>
+<td></td>
+</tr>
+<tr>
+<td></td>
+<td>tache</td>
+<td></td>
+</tr>
+</tbody></table>
+<h5 id="malloced-chunk"><a href="#malloced-chunk" class="headerlink" title="malloced chunk"></a>malloced chunk</h5><p>：已被分配且填写了相应数据的chunk</p>
+<p>结构：堆头+数据区</p>
+<table>
+<thead>
+<tr>
+<th align="center"><strong>size of previous chunk if unallocated(P clear)</strong></th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>size of chunk ,in bytes</strong></td>
+<td align="center"><strong>A</strong></td>
+<td align="center"><strong>M</strong></td>
+<td align="center"><strong>P</strong></td>
+</tr>
+<tr>
+<td align="center">data</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h5 id="free-chunk"><a href="#free-chunk" class="headerlink" title="free chunk"></a>free chunk</h5><p>：被释放掉的malloced chunk成为free chunk</p>
+<p>结构：</p>
+<table>
+<thead>
+<tr>
+<th align="center">size of previous chunk if unallocated(P clear)</th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>size of chunk ,in bytes</strong></td>
+<td align="center"><strong>A</strong></td>
+<td align="center"><strong>M</strong></td>
+<td align="center"><strong>P</strong></td>
+</tr>
+<tr>
+<td align="center">fd</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">bk</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">fd_nextsize</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">bk_nextsize</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">Unused</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<p>堆的大小对齐（size）</p>
+<p>堆的大小必须是2* SIZE_SZ的整数倍，如果申请的内存大小不是2*SIZE的整数倍会被转成满足大小的最小的2 * SIZE_SZ的整数倍；32位系统中，SIZE_SZ=4,64位系统中SIZE_SE=8;也就是32位系统中堆大小为8的倍数，64位系统堆大小为16的倍数，8对应的2进制为000，所以不管size如何变幻对应的低三位固定为0；为了不浪费这3个比特位，它们从高到低分别用来表示：</p>
+<p><strong>NON_MIAN-ARENA：</strong>记录当前chunk是否不属于主线程，1表示不属于，0表示属于。</p>
+<p><strong>IS_MAPPED：</strong>记录当前chunk是否是由mmap分配的。</p>
+<p><strong>PREV_INUSE：</strong>记录前一个chunk是否被分配。一般来说，堆中第一个被分配的内存块的size字段的P位都会被设置为1，以便于防止访问前面的非法内存，当一个chunk的size的P位为0时，我们能通过prev_size字段来获取上一个chunk的大小及其地址，这也方便进行空闲chunk之间的合并。</p>
+<h5 id="top-chunk"><a href="#top-chunk" class="headerlink" title="top chunk"></a>top chunk</h5><p>：arena中从未被使用过的内存区域</p>
+<table>
+<thead>
+<tr>
+<th align="center">CHUNK 1</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">CHUNK 2</td>
+</tr>
+<tr>
+<td align="center"><del>FREE CHUNN 3</del></td>
+</tr>
+<tr>
+<td align="center">CHUNK 4</td>
+</tr>
+<tr>
+<td align="center"><del>FREE CHUNK5</del></td>
+</tr>
+<tr>
+<td align="center">TOP CHUNK</td>
+</tr>
+</tbody></table>
+<h5 id="last-remainder-chunk"><a href="#last-remainder-chunk" class="headerlink" title="last remainder chunk"></a>last remainder chunk</h5><p>：malloc分割原chunk后剩余的部分</p>
+<table>
+<thead>
+<tr>
+<th align="center">malloc 得到的chunk</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">last remain der chunk</td>
+</tr>
+</tbody></table>
+<h2 id="bin"><a href="#bin" class="headerlink" title="bin"></a>bin</h2><p>：管理arena中空闲chunk的结构，以数组的形式存在，数组元素为相应大小chunk链表的链表头，存在于arena的malloc_state中</p>
+<ul>
+<li>unsorted bin</li>
+<li>fast bins</li>
+<li>small bins</li>
+<li>large bins</li>
+<li>(tcache)</li>
+</ul>
+<h5 id="pre-size"><a href="#pre-size" class="headerlink" title="pre_size"></a>pre_size</h5><p>：若前一个物理相邻的chunk是free chunk，则表示其大小。否则用于存储前一个chunk的数据。</p>
+<table>
+<thead>
+<tr>
+<th align="center">pre_size</th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center"></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"><strong>size</strong></td>
+<td align="center"><strong>A</strong></td>
+<td align="center"><strong>M</strong></td>
+<td align="center"><strong>P</strong></td>
+</tr>
+<tr>
+<td align="center">fd</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">bk</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">fd_nextsize</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">bk_nextsize</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">……</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h5 id="size"><a href="#size" class="headerlink" title="size"></a>size</h5><p>：占据一字长的低3bits以后的地址，用于表示当前chunk的大小（整个chunk的大小，包括chunk头）</p>
+<h5 id="fd"><a href="#fd" class="headerlink" title="fd"></a>fd</h5><p>：在bin中指向下一个（非物理相邻）空闲的chunk（比当前bin高地址的bin）</p>
+<h5 id="bk"><a href="#bk" class="headerlink" title="bk"></a>bk</h5><p>：在bin中指向上一个（非物理相邻）空闲的chunk</p>
+<h5 id="fd-nextsize-large-bin特有"><a href="#fd-nextsize-large-bin特有" class="headerlink" title="fd_nextsize(large bin特有)"></a>fd_nextsize(large bin特有)</h5><p>：在large bin中指向前一个与当前chunk大小不同的第一个空闲块，不包含bin的头指针</p>
+<p>bk__nextsize(large bin特有)</p>
+<p>：在large bin中指向后一个与当前chunk大小不同的第一个空闲块，不包含bin的头指针</p>
+<ul>
+<li>一般空闲的large chunk在fd的遍历顺序中，按照由大到小的顺序排列。这样做可以避免在寻找合适chunk时挨个遍历。</li>
+</ul>
+<h2 id="bins"><a href="#bins" class="headerlink" title="bins"></a>bins</h2><h5 id="fast-bins"><a href="#fast-bins" class="headerlink" title="fast bins"></a>fast bins</h5><ul>
+<li><p>fastbinsY[]</p>
+</li>
+<li><p>单项列表</p>
+</li>
+<li><p>LIFO</p>
+</li>
+<li><p>管理16、24、32、40、48、56、64Bytes的free chunks（32位下默认）</p>
+</li>
+<li><p>其中的chunk的in_use位（下一个物理相邻的chunk的P位）总为1</p>
+</li>
+</ul>
+<h5 id="unsorted-bin"><a href="#unsorted-bin" class="headerlink" title="unsorted bin"></a>unsorted bin</h5><ul>
+<li>bins[1]</li>
+<li>管理刚刚释还未分类的chunk</li>
+<li>可以视为空闲chunk回归其所属bin之前的缓冲区</li>
+</ul>
+<h5 id="small-bins"><a href="#small-bins" class="headerlink" title="small bins"></a>small bins</h5><ul>
+<li>bins[2]~bins[63]</li>
+<li>62个循环双向链表</li>
+<li>FIFO</li>
+<li>管理16、24、32、40、……、504Bytes的free chunk（32位下）</li>
+<li>每个链表中存储的chunk大小都一致</li>
+</ul>
+<h5 id="large-bins"><a href="#large-bins" class="headerlink" title="large bins"></a>large bins</h5><ul>
+<li>bins[64]~bins[126]</li>
+<li>63个循环双向链表</li>
+<li>FIFO</li>
+<li>管理大于504Bytes的free chunks（32位下）</li>
+</ul>
+<h5 id="malloc"><a href="#malloc" class="headerlink" title="malloc"></a>malloc</h5><ul>
+<li>它根据用户申请的内存块大小以及相应大小chunk通常使用的频度（fastbin chunk，small chunk，large chunk），依次实现了不同的分配方法。</li>
+<li>它由小到大依次检查不同的bin中是否有相应的空闲块可以满足用户请求的内存</li>
+<li>当所有的空闲chunk都无法满足时，他会考虑top chunk</li>
+<li>当top chunk也无法满足时，堆分配器才会进行内存块申请</li>
+</ul>
+<h5 id="free"><a href="#free" class="headerlink" title="free"></a>free</h5><ul>
+<li>它将用户暂且不用的chunk回收给堆管理器，适当的时候还会归还给操作系统。</li>
+<li>它依据chunk的大小来优先试图将free chunk链入tcache或者fast bin。不满足则链入unsorted bin中。</li>
+<li>在条件满足时free函数遍历unsorted bin并将其中的物理相邻的free chunk合并，将相应大小的chunk分类放入small bin或large bin中。</li>
+<li>除了tcache chunk（类似于扩大版的fast bin，但最多只能存7个）与fast bin chunk，其它chunk在free时会与其物理相邻的free chunk合并。</li>
+</ul>
+<p>参考链接：<a href="https://www.bilibili.com/video/BV1Uv411j7fr?p=18">【星盟安全】PWN系列教程（持续更新）_哔哩哔哩_bilibili</a></p>
+]]></content>
+      <categories>
+        <category>pwn</category>
+      </categories>
+      <tags>
+        <tag>pwn</tag>
+        <tag>heap</tag>
+      </tags>
+  </entry>
 </search>
