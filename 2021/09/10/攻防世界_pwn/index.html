@@ -125,16 +125,16 @@
 <h2 id="1、get-shell"><a href="#1、get-shell" class="headerlink" title="1、get shell"></a>1、get shell</h2><p>nc接连，cat flag。</p>
 <hr>
 <h2 id="2、hello-pwn"><a href="#2、hello-pwn" class="headerlink" title="2、hello_pwn"></a>2、hello_pwn</h2><p>扔进ida，f5一波</p>
-<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120057322.png" alt="image-20210919120057322"></p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120057322.png"></p>
 <p>#alarm(时间)是闹钟函数，它可以在进程中设置一个定时器，当定时器指定的时间到时，</p>
 <p>#它向进程发送SIGALRM信号。</p>
 <p>#setbuf(文件流，缓冲区),将缓冲区与文件流相关联。</p>
 <p>#int read(int handle,void *buf,int len);读取打开文件的内容。</p>
 <p>#read（要读取的文件，文件内容所在缓冲区，读取的长度）</p>
 <p>查看sub_400686 </p>
-<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120126615.png" alt="image-20210919120126615"></p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120126615.png"></p>
 <p>看到system中的内容，可以确定它就是shellcode。 </p>
-<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120141832.png" alt="image-20210919120141832"></p>
+<p><img src="/2021/09/10/%E6%94%BB%E9%98%B2%E4%B8%96%E7%95%8C_pwn/image-20210919120141832.png"></p>
 <p>从内存中也可以可以看出，变量unk_601068地址为601068，</p>
 <p>变量dword_60106C地址为60106C，二者相差4个内存单元。</p>
 <p>故待会随便输入4个数作为deadbeef。</p>
