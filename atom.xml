@@ -6,7 +6,7 @@
   <link href="https://iy30.github.io/atom.xml" rel="self"/>
   
   <link href="https://iy30.github.io/"/>
-  <updated>2021-10-21T11:25:39.132Z</updated>
+  <updated>2021-10-26T16:30:50.258Z</updated>
   <id>https://iy30.github.io/</id>
   
   <author>
@@ -15,6 +15,127 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>babyheap_0ctf_2017</title>
+    <link href="https://iy30.github.io/2021/10/25/babyheap_0ctf_2017/"/>
+    <id>https://iy30.github.io/2021/10/25/babyheap_0ctf_2017/</id>
+    <published>2021-10-25T01:00:00.000Z</published>
+    <updated>2021-10-26T16:30:50.258Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;checksec&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2021/10/25/babyheap_0ctf_2017/image-20211023004434342.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;ida&lt;/p&gt;
+&lt;p&gt;&lt;img</summary>
+        
+      
+    
+    
+    
+    <category term="buu" scheme="https://iy30.github.io/categories/buu/"/>
+    
+    <category term="pwn" scheme="https://iy30.github.io/categories/buu/pwn/"/>
+    
+    
+    <category term="heap" scheme="https://iy30.github.io/tags/heap/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>pie_1</title>
+    <link href="https://iy30.github.io/2021/10/25/pie_1/"/>
+    <id>https://iy30.github.io/2021/10/25/pie_1/</id>
+    <published>2021-10-25T01:00:00.000Z</published>
+    <updated>2021-10-26T16:30:46.022Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;1&lt;/p&gt;
+&lt;h1 id=&quot;sonic&quot;&gt;&lt;a href=&quot;#sonic&quot; class=&quot;headerlink&quot; title=&quot;sonic&quot;&gt;&lt;/a&gt;sonic&lt;/h1&gt;&lt;p&gt;checksec&lt;/p&gt;
+&lt;p&gt;&lt;img</summary>
+        
+      
+    
+    
+    
+    <category term="比赛" scheme="https://iy30.github.io/categories/%E6%AF%94%E8%B5%9B/"/>
+    
+    <category term="pwn" scheme="https://iy30.github.io/categories/%E6%AF%94%E8%B5%9B/pwn/"/>
+    
+    
+    <category term="pie" scheme="https://iy30.github.io/tags/pie/"/>
+    
+    <category term="ret2text" scheme="https://iy30.github.io/tags/ret2text/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>jarvisoj_level2</title>
+    <link href="https://iy30.github.io/2021/10/17/jarvisoj_level2/"/>
+    <id>https://iy30.github.io/2021/10/17/jarvisoj_level2/</id>
+    <published>2021-10-17T01:00:00.000Z</published>
+    <updated>2021-10-22T15:47:43.591Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;checksec&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2021/10/17/jarvisoj_level2/image-20211022130318884.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;ida&lt;/p&gt;
+&lt;p&gt;&lt;img</summary>
+        
+      
+    
+    
+    
+    <category term="buu" scheme="https://iy30.github.io/categories/buu/"/>
+    
+    <category term="pwn" scheme="https://iy30.github.io/categories/buu/pwn/"/>
+    
+    
+    <category term="32位ret2text" scheme="https://iy30.github.io/tags/32%E4%BD%8Dret2text/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>not_the_same_3dsctf_2016</title>
+    <link href="https://iy30.github.io/2021/10/17/not_the_same_3dsctf_2016/"/>
+    <id>https://iy30.github.io/2021/10/17/not_the_same_3dsctf_2016/</id>
+    <published>2021-10-17T01:00:00.000Z</published>
+    <updated>2021-10-22T16:20:02.383Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;checksec&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2021/10/17/not_the_same_3dsctf_2016/image-20211023001145486.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;ida&lt;/p&gt;
+&lt;p&gt;&lt;img</summary>
+        
+      
+    
+    
+    
+    <category term="buu" scheme="https://iy30.github.io/categories/buu/"/>
+    
+    <category term="pwn" scheme="https://iy30.github.io/categories/buu/pwn/"/>
+    
+    
+    <category term="32位ret2text" scheme="https://iy30.github.io/tags/32%E4%BD%8Dret2text/"/>
+    
+  </entry>
   
   <entry>
     <title>warmup_csaw_2016</title>
@@ -81,7 +202,7 @@
     <link href="https://iy30.github.io/2021/10/10/pwn1_sctf_2016/"/>
     <id>https://iy30.github.io/2021/10/10/pwn1_sctf_2016/</id>
     <published>2021-10-10T01:00:00.000Z</published>
-    <updated>2021-10-21T11:24:34.680Z</updated>
+    <updated>2021-10-22T16:35:04.958Z</updated>
     
     
       
@@ -102,9 +223,7 @@
     <category term="pwn" scheme="https://iy30.github.io/categories/buu/pwn/"/>
     
     
-    <category term="32位ret2syscall" scheme="https://iy30.github.io/tags/32%E4%BD%8Dret2syscall/"/>
-    
-    <category term="other" scheme="https://iy30.github.io/tags/other/"/>
+    <category term="32位ret2text" scheme="https://iy30.github.io/tags/32%E4%BD%8Dret2text/"/>
     
   </entry>
   
@@ -113,7 +232,7 @@
     <link href="https://iy30.github.io/2021/10/10/ciscn_2019_c_1/"/>
     <id>https://iy30.github.io/2021/10/10/ciscn_2019_c_1/</id>
     <published>2021-10-10T01:00:00.000Z</published>
-    <updated>2021-10-21T16:41:02.996Z</updated>
+    <updated>2021-10-22T16:39:08.924Z</updated>
     
     
       
@@ -135,6 +254,8 @@
     
     
     <category term="64位ret2libc" scheme="https://iy30.github.io/tags/64%E4%BD%8Dret2libc/"/>
+    
+    <category term="用puts泄露地址" scheme="https://iy30.github.io/tags/%E7%94%A8puts%E6%B3%84%E9%9C%B2%E5%9C%B0%E5%9D%80/"/>
     
   </entry>
   
@@ -171,7 +292,7 @@
     <link href="https://iy30.github.io/2021/10/10/OGeek2019%20babyrop/"/>
     <id>https://iy30.github.io/2021/10/10/OGeek2019%20babyrop/</id>
     <published>2021-10-10T01:00:00.000Z</published>
-    <updated>2021-10-21T16:56:19.293Z</updated>
+    <updated>2021-10-22T16:38:55.341Z</updated>
     
     
       
@@ -193,6 +314,8 @@
     
     
     <category term="32位ret2libc" scheme="https://iy30.github.io/tags/32%E4%BD%8Dret2libc/"/>
+    
+    <category term="用write泄露地址" scheme="https://iy30.github.io/tags/%E7%94%A8write%E6%B3%84%E9%9C%B2%E5%9C%B0%E5%9D%80/"/>
     
   </entry>
   
