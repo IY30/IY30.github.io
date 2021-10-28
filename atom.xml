@@ -6,7 +6,7 @@
   <link href="https://iy30.github.io/atom.xml" rel="self"/>
   
   <link href="https://iy30.github.io/"/>
-  <updated>2021-10-26T16:30:50.258Z</updated>
+  <updated>2021-10-28T08:46:04.120Z</updated>
   <id>https://iy30.github.io/</id>
   
   <author>
@@ -15,6 +15,40 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>pwnpwn</title>
+    <link href="https://iy30.github.io/2021/10/28/pwnpwn/"/>
+    <id>https://iy30.github.io/2021/10/28/pwnpwn/</id>
+    <published>2021-10-28T01:00:00.000Z</published>
+    <updated>2021-10-28T08:46:04.120Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;p&gt;checksec，保护全开&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/2021/10/28/pwnpwn/image-20211028160844038.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;ida&lt;/p&gt;
+&lt;p&gt;&lt;img</summary>
+        
+      
+    
+    
+    
+    <category term="比赛" scheme="https://iy30.github.io/categories/%E6%AF%94%E8%B5%9B/"/>
+    
+    <category term="pwn" scheme="https://iy30.github.io/categories/%E6%AF%94%E8%B5%9B/pwn/"/>
+    
+    
+    <category term="canary" scheme="https://iy30.github.io/tags/canary/"/>
+    
+    <category term="pie" scheme="https://iy30.github.io/tags/pie/"/>
+    
+    <category term="ret2syscall" scheme="https://iy30.github.io/tags/ret2syscall/"/>
+    
+  </entry>
   
   <entry>
     <title>babyheap_0ctf_2017</title>
@@ -51,7 +85,7 @@
     <link href="https://iy30.github.io/2021/10/25/pie_1/"/>
     <id>https://iy30.github.io/2021/10/25/pie_1/</id>
     <published>2021-10-25T01:00:00.000Z</published>
-    <updated>2021-10-26T16:30:46.022Z</updated>
+    <updated>2021-10-28T08:34:02.539Z</updated>
     
     
       
